@@ -42,6 +42,12 @@ public class RelationshipManager extends GameObjectManager {
         return new ArrayList<>(moraleRelationshipMap.values());
     }
 
+    public List<MoraleRelationship> getMoraleRelationships(Promotion promotion) {
+        return getMoraleRelationships().stream()
+                .filter(moraleRelationship -> moraleRelationship.getPromotion().equals(promotion))
+                .collect(Collectors.toList());
+    }
+
     public List<Relationship> getRelationships(Worker worker) {
         List<Relationship> relationships = new ArrayList<>();
         relationships.addAll(

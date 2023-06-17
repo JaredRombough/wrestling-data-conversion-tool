@@ -50,6 +50,17 @@ public class ContractManager extends GameObjectManager implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    public List<Contract> getActiveContracts(Promotion promotion) {
+        List<Contract> promotionContracts = new ArrayList<>();
+        for (Contract contract : contractMap.values()) {
+            if (contract.isActive() && contract.getPromotion().equals(promotion)) {
+                promotionContracts.add(contract);
+            }
+        }
+
+        return promotionContracts;
+    }
+
     public List<Contract> getExpiredContracts() {
         return contractMap.values().stream()
                 .filter(contract -> !contract.isActive())

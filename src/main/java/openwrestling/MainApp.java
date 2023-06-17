@@ -184,58 +184,45 @@ public class MainApp extends Application {
         }
 
 
-    public Image loadImageFromPath(String imagePath) {
-        return ViewUtils.loadImage(getClass().getResourceAsStream(imagePath));
-    }
+//    public Image loadImageFromPath(String imagePath) {
+//        return ViewUtils.loadImage(getClass().getResourceAsStream(imagePath));
+//    }
+//
+//    public Image getDefaultWorkerImage(SegmentItem segmentItem) {
+//        if (segmentItem.getGender().equals(Gender.MALE)) {
+//            if (DEMO_WORKER_IMAGES > 0) {
+//                int randomImageNumber = RandomUtils.nextInt(1, DEMO_WORKER_IMAGES + 1);
+//                String imagePath = String.format("images/demo/%d.jpg", randomImageNumber);
+//                return loadImageFromPath(imagePath);
+//            }
+//            return loadImageFromPath("images/workerDefaultMale.jpg");
+//        } else {
+//            return loadImageFromPath("images/workerDefaultFemale.jpg");
+//        }
+//
+//    }
 
-    public Image getDefaultWorkerImage(SegmentItem segmentItem) {
-        if (segmentItem.getGender().equals(Gender.MALE)) {
-            if (DEMO_WORKER_IMAGES > 0) {
-                int randomImageNumber = RandomUtils.nextInt(1, DEMO_WORKER_IMAGES + 1);
-                String imagePath = String.format("images/demo/%d.jpg", randomImageNumber);
-                return loadImageFromPath(imagePath);
-            }
-            return loadImageFromPath("images/workerDefaultMale.jpg");
-        } else {
-            return loadImageFromPath("images/workerDefaultFemale.jpg");
-        }
+//
+//
+//
+//    private void loadScreens() {
+//        //this will load into memory all the screens that we will be switching between
+//        //so we aren't creating a new screen each time
+//        List<ScreenCode> screensToLoad = new ArrayList<>(Arrays.asList(ScreenCode.FINANCIAL,
+//                ScreenCode.CALENDAR,
+//                ScreenCode.BROWSER,
+//                ScreenCode.EVENT,
+//                ScreenCode.WORKER_OVERVIEW,
+//                ScreenCode.NEWS,
+//                ScreenCode.RESULTS
+//        ));
+//
+//        for (ScreenCode screen : screensToLoad) {
+//            screens.add(ViewUtils.loadScreenFromFXML(screen, this, gameController));
+//        }
+//    }
+//
 
-    }
-
-
-
-
-    private void loadScreens() {
-        //this will load into memory all the screens that we will be switching between
-        //so we aren't creating a new screen each time
-        List<ScreenCode> screensToLoad = new ArrayList<>(Arrays.asList(ScreenCode.FINANCIAL,
-                ScreenCode.CALENDAR,
-                ScreenCode.BROWSER,
-                ScreenCode.EVENT,
-                ScreenCode.WORKER_OVERVIEW,
-                ScreenCode.NEWS,
-                ScreenCode.RESULTS
-        ));
-
-        for (ScreenCode screen : screensToLoad) {
-            screens.add(ViewUtils.loadScreenFromFXML(screen, this, gameController));
-        }
-    }
-
-    /**
-     * Initializes the root layout.
-     *
-     * @throws java.io.IOException
-     */
-    public void initRootLayout() {
-        screens.add(ViewUtils.loadScreenFromFXML(ScreenCode.ROOT, this, gameController));
-        Scene scene = new Scene(ViewUtils.getByCode(screens, ScreenCode.ROOT).pane, currentStageWidth, currentStageHeight);
-        if (cssEnabled) {
-            scene.getStylesheets().add("style.css");
-        }
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
 
     public GameScreen show(ScreenCode code) {
         if (currentScreen != null) {
@@ -245,7 +232,7 @@ public class MainApp extends Application {
         GameScreen screen = ViewUtils.getByCode(screens, code);
         currentScreen = screen;
 
-        ((BorderPane) ViewUtils.getByCode(screens, ScreenCode.ROOT).pane).setCenter(screen.pane);
+   //     ((BorderPane) ViewUtils.getByCode(screens, ScreenCode.ROOT).pane).setCenter(screen.pane);
       //  ((RootLayoutController) ViewUtils.getByCode(screens, ScreenCode.ROOT).controller).updateSelectedButton(code);
 
         //screen.controller.updateLabels();

@@ -32,11 +32,11 @@ public class PromotionManager extends GameObjectManager implements Serializable 
     public void selectData() {
         List<Promotion> promotions = getDatabase().selectAll(Promotion.class);
         promotions.forEach(promotion -> promotionMap.put(promotion.getPromotionID(), promotion));
-        long playerPromotionID = gameSettingManager.getGameSettingLong(PLAYER_PROMOTION);
-        playerPromotion = promotions.stream()
-                .filter(promotion -> playerPromotionID == promotion.getPromotionID())
-                .findFirst()
-                .orElseThrow();
+//        long playerPromotionID = gameSettingManager.getGameSettingLong(PLAYER_PROMOTION);
+//        playerPromotion = promotions.stream()
+//                .filter(promotion -> playerPromotionID == promotion.getPromotionID())
+//                .findFirst()
+//                .orElseThrow();
     }
 
     public void setPlayerPromotion(Promotion promotion) {
