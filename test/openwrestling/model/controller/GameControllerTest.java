@@ -5,7 +5,9 @@ import openwrestling.database.Database;
 import openwrestling.file.Import;
 import openwrestling.model.controller.nextDay.PromotionSettingsManager;
 import openwrestling.model.gameObjects.EventTemplate;
+import openwrestling.model.gameObjects.Worker;
 import openwrestling.model.segment.constants.EventFrequency;
+import openwrestling.model.segment.constants.Gender;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -51,7 +53,7 @@ public class GameControllerTest {
             });
         }
 
-        outputDirectoryName = new SimpleDateFormat("yyyy_MM_dd HH mm'.txt'").format(new Date());
+        outputDirectoryName = new SimpleDateFormat("yyyy_MM_dd HH mm").format(new Date());
         File destinationDirectory = new File("test import databases\\" + outputDirectoryName);
         destinationDirectory.mkdir();
 
@@ -74,13 +76,75 @@ public class GameControllerTest {
         int workerCount = 430;
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
-//
-//        for (int i = 0; i < TEST_DAYS; i++) {
-//            //gameController.nextDay();
-//        }
-//
-//        assertAfterState(workerCount);
 
+        Worker firstWorker = gameController.getWorkerManager().getWorkers().get(0);
+
+        assertThat(firstWorker.getName()).startsWith("C");
+        assertThat(firstWorker.getName()).hasSize(13);
+        assertThat(firstWorker.getWorkerID()).isEqualTo(1);
+        assertThat(firstWorker.getShortName()).startsWith("J");
+        assertThat(firstWorker.getShortName()).hasSize(7);
+        assertThat(firstWorker.getImageFileName()).isEqualTo("None");
+        assertThat(firstWorker.getImportKey()).isEqualTo(256);
+        assertThat(firstWorker.getStriking()).isEqualTo(80);
+        assertThat(firstWorker.getFlying()).isEqualTo(90);
+        assertThat(firstWorker.getWrestling()).isEqualTo(95);
+        assertThat(firstWorker.getCharisma()).isEqualTo(100);
+        assertThat(firstWorker.getBehaviour()).isEqualTo(90);
+        assertThat(firstWorker.getPopularity()).isEqualTo(30);
+        assertThat(firstWorker.getAge()).isEqualTo(22);
+        assertThat(firstWorker.getGender()).isEqualTo(Gender.MALE);
+        assertThat(firstWorker.isFullTime()).isEqualTo(true);
+        assertThat(firstWorker.isMainRoster()).isEqualTo(true);
+        assertThat(firstWorker.getManager()).isEqualTo(null);
+
+        assertThat(firstWorker.isHighSpots()).isFalse();
+        assertThat(firstWorker.isShooting()).isFalse();
+        assertThat(firstWorker.isFonzFactor()).isFalse();
+        assertThat(firstWorker.isSuperstarLook()).isTrue();
+        assertThat(firstWorker.isDiva()).isFalse();
+        assertThat(firstWorker.isMenacing()).isFalse();
+        assertThat(firstWorker.isAnnouncer()).isTrue();
+        assertThat(firstWorker.isBooker()).isFalse();
+        assertThat(firstWorker.isTrainer()).isTrue();
+
+        assertThat(firstWorker.getBirthMonth()).isEqualTo(11);
+        assertThat(firstWorker.getWeight()).isEqualTo("H");
+
+        assertThat(firstWorker.isSpeaks()).isTrue();
+
+        assertThat(firstWorker.getNationality()).isEqualTo("Other");
+
+        assertThat(firstWorker.getWage()).isEqualTo(50000);
+
+        assertThat(firstWorker.getPrimaryFinisherName()).startsWith("L");
+        assertThat(firstWorker.getPrimaryFinisherName()).hasSize(10);
+        assertThat(firstWorker.getPrimaryFinisherType()).isEqualTo("Ground");
+        assertThat(firstWorker.getSecondaryFinisherName()).startsWith("L");
+        assertThat(firstWorker.getSecondaryFinisherName()).hasSize(10);
+        assertThat(firstWorker.getSecondaryFinisherName()).isNotEqualTo(firstWorker.getPrimaryFinisherName());
+        assertThat(firstWorker.getSecondaryFinisherType()).isEqualTo("Submission");
+
+        Worker workerWithManager = gameController.getWorkerManager().getWorker(341);
+
+        assertThat(workerWithManager.getName()).startsWith("G");
+        assertThat(workerWithManager.getName()).hasSize(14);
+        assertThat(workerWithManager.getWorkerID()).isEqualTo(341);
+        assertThat(workerWithManager.getShortName()).startsWith("G");
+        assertThat(workerWithManager.getShortName()).hasSize(8);
+        assertThat(workerWithManager.getImageFileName()).isEqualTo("None");
+        assertThat(workerWithManager.getImportKey()).isEqualTo(8707);
+        assertThat(workerWithManager.getStriking()).isEqualTo(8);
+        assertThat(workerWithManager.getFlying()).isEqualTo(0);
+        assertThat(workerWithManager.getWrestling()).isEqualTo(0);
+        assertThat(workerWithManager.getCharisma()).isEqualTo(80);
+        assertThat(workerWithManager.getBehaviour()).isEqualTo(86);
+        assertThat(workerWithManager.getPopularity()).isEqualTo(75);
+        assertThat(workerWithManager.getAge()).isEqualTo(41);
+        assertThat(workerWithManager.getGender()).isEqualTo(Gender.MALE);
+        assertThat(workerWithManager.isFullTime()).isEqualTo(true);
+        assertThat(workerWithManager.isMainRoster()).isEqualTo(true);
+        assertThat(workerWithManager.getManager().getWorkerID()).isEqualTo(246);
     }
 
 
@@ -91,12 +155,6 @@ public class GameControllerTest {
         int workerCount = 898;
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
-//
-//        for (int i = 0; i < TEST_DAYS; i++) {
-//            //gameController.nextDay();
-//        }
-//
-//        assertAfterState(workerCount);
 
     }
 
@@ -108,11 +166,6 @@ public class GameControllerTest {
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
 
-//        for (int i = 0; i < TEST_DAYS; i++) {
-//            //gameController.nextDay();
-//        }
-//
-//        assertAfterState(workerCount);
 
     }
 
@@ -124,12 +177,6 @@ public class GameControllerTest {
         int workerCount = 2156;
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
-//
-//        for (int i = 0; i < TEST_DAYS; i++) {
-//            //gameController.nextDay();
-//        }
-//
-//        assertAfterState(workerCount);
 
     }
 
@@ -142,54 +189,9 @@ public class GameControllerTest {
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
 
-//        for (int i = 0; i < TEST_DAYS; i++) {
-//            //gameController.nextDay();
-//        }
-//
-//        assertAfterState(workerCount);
+
     }
 
-
-    private void assertAfterState(int workerCount) {
-        assertThat(gameController.getPromotionManager().getPromotions()).isNotEmpty();
-        gameController.getPromotionManager().getPromotions().forEach(promotion -> {
-            assertThat(promotion.getName()).isNotBlank();
-            assertThat(promotion.getPromotionID()).isNotZero().isNotNull();
-
-            List<EventTemplate> weeklyEventTemplates = gameController.getEventManager().getEventTemplates(promotion).stream().filter(eventTemplate -> eventTemplate.getEventFrequency().equals(EventFrequency.WEEKLY)).collect(Collectors.toList());
-//            if (CollectionUtils.isNotEmpty(weeklyEventTemplates)) {
-//                weeklyEventTemplates.forEach(eventTemplate ->
-//                        assertThat(gameController.getFeudManager().getActiveFeuds(eventTemplate)).hasSizeBetween(4, 10)
-//                );
-//            } else {
-//                assertThat(gameController.getFeudManager().getActiveFeuds(promotion)).hasSizeBetween(4, 10);
-//            }
-
-            assertThat(gameController.getWorkerManager().getRoster(promotion)).hasSizeGreaterThanOrEqualTo(promotionSettingsManager.getMinimumRosterSize(promotion));
-        });
-
-
-        assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
-        gameController.getWorkerManager().getWorkers().forEach(worker -> {
-            assertThat(worker.getName()).isNotBlank();
-            assertThat(worker.getWorkerID()).isNotZero().isNotNull();
-        });
-
-        assertThat(gameController.getEventManager().getEvents()).isNotEmpty();
-        gameController.getEventManager().getEvents().forEach(event -> {
-            assertThat(event.getEventID()).isNotZero().isNotNull();
-            assertThat(event.getName()).isNotBlank();
-            //TODO some events are empty because of 2 events on same date
-        });
-
-        assertThat(gameController.getSegmentManager().getSegments()).isNotEmpty();
-        gameController.getSegmentManager().getSegments().forEach(segment -> {
-            assertThat(segment.getSegmentID()).isNotZero().isNotNull();
-            assertThat(segment.getSegmentTeams()).hasSize(2);
-            assertThat(segment.getSegmentTeams().get(0).getWorkers().size()).isNotZero();
-            assertThat(segment.getSegmentTeams().get(0).getWorkers().size()).isEqualTo(segment.getSegmentTeams().get(0).getWorkers().size());
-        });
-    }
 
     private GameController initGameControllerFromTestDB(String dbName) {
         File importDatabase = new File("test import databases\\" + outputDirectoryName + "\\" + dbName + ".db");

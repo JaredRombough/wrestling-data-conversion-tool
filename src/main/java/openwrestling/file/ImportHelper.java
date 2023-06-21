@@ -426,6 +426,123 @@ public class ImportHelper extends Logging {
                     currentLine.charAt(293) == 'ÿ'
                             ? Gender.FEMALE : Gender.MALE);
 
+
+
+            int nationalityInt = hexStringToInt(hexLine.get(275));
+            String nationality = "";
+            if(nationalityInt == 0) {
+                nationality = "Other";
+            } else if(nationalityInt == 1) {
+                nationality = "American";
+            } else if(nationalityInt == 2) {
+                nationality = "Australian";
+            }else if(nationalityInt == 3) {
+                nationality = "British";
+            }else if(nationalityInt == 4) {
+                nationality = "Canadian";
+            }else if(nationalityInt == 5) {
+                nationality = "European";
+            }else if(nationalityInt == 6) {
+                nationality = "Japanese";
+            }else if(nationalityInt == 7) {
+                nationality = "Japanese";
+            }else if(nationalityInt == 8) {
+                nationality = "Mexican";
+            }
+
+
+
+
+            int wageInt = hexStringToInt(hexLine.get(80));
+
+
+
+            worker.setHighSpots(currentLine.charAt(161) == 'ÿ');
+            worker.setShooting(currentLine.charAt(165) == 'ÿ');
+            worker.setFonzFactor(currentLine.charAt(279) == 'ÿ');
+            worker.setSuperstarLook(currentLine.charAt(273) == 'ÿ');
+            //todo reset by editor, women only?
+            worker.setDiva(currentLine.charAt(161) == 'ÿ');
+            worker.setMenacing(currentLine.charAt(277) == 'ÿ');
+            worker.setAnnouncer(currentLine.charAt(281) == 'ÿ');
+            worker.setBooker(currentLine.charAt(283) == 'ÿ');
+            worker.setTrainer(currentLine.charAt(271) == 'ÿ');
+            worker.setBirthMonth(hexStringToInt(hexLine.get(40)));
+            worker.setWeight(String.valueOf(currentLine.charAt(44)));
+            worker.setSpeaks(currentLine.charAt(187) == 'ÿ');
+            worker.setNationality(nationality);
+            worker.setWage((long) wageInt * 1000);
+            worker.setPrimaryFinisherName(currentLine.substring(189 , 213).trim());
+            worker.setSecondaryFinisherName(currentLine.substring(220 , 241).trim());
+
+            //primary finisher type (ground)
+            //ground -> corner
+            //216, 217 from 0,0 -> ÿ,ÿ
+            //ground -> impact
+            //218, 219 from ÿ,ÿ -> 0,0
+            //ground -> submission
+            //214,215 from 0,0 -> ÿ,ÿ
+            //218, 219 from ÿ,ÿ -> 0,0
+            //ground -> top rope
+            //216,217 from 0,0 -> ÿ,ÿ
+            //218, 219 from ÿ,ÿ -> 0,0
+            //ground -> top rope standing
+            //214,215 from 0,0 -> ÿ,ÿ
+            //216,217 from 0,0 -> ÿ,ÿ
+            //218, 219 from ÿ,ÿ -> 0,0
+
+            String primaryFinisherType = "";
+
+            if(currentLine.charAt(216) == 'ÿ' && currentLine.charAt(218) == 'ÿ') {
+                primaryFinisherType = "Corner";
+            } else if(currentLine.charAt(216) != 'ÿ' && currentLine.charAt(218) != 'ÿ') {
+                primaryFinisherType = "Impact";
+            } else if(currentLine.charAt(216) != 'ÿ' && currentLine.charAt(218) == 'ÿ') {
+                primaryFinisherType = "Ground";
+            } else if(currentLine.charAt(214) == 'ÿ' && currentLine.charAt(216) != 'ÿ') {
+                primaryFinisherType = "Submission";
+            }else if(currentLine.charAt(216) == 'ÿ' && currentLine.charAt(218) != 'ÿ') {
+                primaryFinisherType = "Top Rope";
+            }else if(currentLine.charAt(214) == 'ÿ' && currentLine.charAt(216) == 'ÿ') {
+                primaryFinisherType = "Top Rope Standing";
+            }
+
+            worker.setPrimaryFinisherType(primaryFinisherType);
+
+            //secondary finisher type (submission)
+            //submission -> corner
+            //245, 246 from ÿ,ÿ -> 0,0
+            //247, 248 from 0,0 -> ÿ,ÿ
+            //249, 250 from 0,0 -> ÿ,ÿ
+            //submission -> ground
+            //245, 246 from ÿ,ÿ -> 0,0
+            //249, 250 from 0,0 -> ÿ,ÿ
+            //submission -> impact
+            //245, 246 from ÿ,ÿ -> 0,0
+            //submission -> top rope
+            //245, 246 from ÿ,ÿ -> 0,0
+            //247, 248 from 0,0 -> ÿ,ÿ
+            //submission -> top rope standing
+            //247, 248 from 0,0 -> ÿ,ÿ
+
+            String secondaryFinisherType = "";
+
+            if(currentLine.charAt(245) != 'ÿ' && currentLine.charAt(247) == 'ÿ' && currentLine.charAt(249) == 'ÿ') {
+                secondaryFinisherType = "Corner";
+            } else if(currentLine.charAt(245) != 'ÿ' && currentLine.charAt(247) != 'ÿ' && currentLine.charAt(249) != 'ÿ') {
+                secondaryFinisherType = "Impact";
+            } else if(currentLine.charAt(245) != 'ÿ' && currentLine.charAt(247) != 'ÿ' && currentLine.charAt(249) == 'ÿ') {
+                secondaryFinisherType = "Ground";
+            } else if(currentLine.charAt(245) == 'ÿ' && currentLine.charAt(247) != 'ÿ' && currentLine.charAt(249) != 'ÿ') {
+                secondaryFinisherType = "Submission";
+            }else if(currentLine.charAt(245) != 'ÿ' && currentLine.charAt(247) == 'ÿ' && currentLine.charAt(249) != 'ÿ') {
+                secondaryFinisherType = "Top Rope";
+            }else if(currentLine.charAt(245) == 'ÿ' && currentLine.charAt(247) == 'ÿ' && currentLine.charAt(249) != 'ÿ') {
+                secondaryFinisherType = "Top Rope Standing";
+            }
+
+            worker.setSecondaryFinisherType(secondaryFinisherType);
+
             boolean fullTime;
             boolean mainRoster;
 

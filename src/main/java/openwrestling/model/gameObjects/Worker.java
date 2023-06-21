@@ -35,6 +35,30 @@ public class Worker extends GameObject implements Serializable, SegmentItem, iPe
     private int minimumPopularity = 0;
     private Worker manager;
 
+    private boolean highSpots;
+    private boolean shooting;
+    private boolean fonzFactor;
+    private boolean superstarLook;
+    private boolean diva;
+    private boolean menacing;
+    private boolean announcer;
+    private boolean booker;
+    private boolean trainer;
+
+    private boolean speaks;
+
+    private String nationality;
+
+    private String primaryFinisherName;
+    private String primaryFinisherType;
+    private String secondaryFinisherName;
+    private String secondaryFinisherType;
+
+    private String weight;
+    private int birthMonth;
+
+    private Long wage;
+
     public void addContract(Contract contract) {
         contracts.add(contract);
     }

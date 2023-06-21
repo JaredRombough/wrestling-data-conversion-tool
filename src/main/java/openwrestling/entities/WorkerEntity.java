@@ -73,6 +73,60 @@ public class WorkerEntity extends Entity {
     private boolean mainRoster;
 
     @DatabaseField
+    private boolean highSpots;
+
+    @DatabaseField
+    private boolean shooting;
+
+    @DatabaseField
+    private boolean fonzFactor;
+
+    @DatabaseField
+    private boolean superstarLook;
+
+    @DatabaseField
+    private boolean diva;
+
+    @DatabaseField
+    private boolean menacing;
+
+    @DatabaseField
+    private boolean announcer;
+
+    @DatabaseField
+    private boolean booker;
+
+    @DatabaseField
+    private boolean trainer;
+
+    @DatabaseField
+    private int birthMonth;
+
+    @DatabaseField
+    private String weight;
+
+    @DatabaseField
+    private boolean speaks;
+
+    @DatabaseField
+    private String nationality;
+
+    @DatabaseField
+    private Long wage;
+
+    @DatabaseField
+    private String primaryFinisherName;
+
+    @DatabaseField
+    private String primaryFinisherType;
+
+    @DatabaseField
+    private String secondaryFinisherName;
+
+    @DatabaseField
+    private String secondaryFinisherType;
+
+    @DatabaseField
     private int minimumPopularity;
 
     @DatabaseField(foreign = true)
