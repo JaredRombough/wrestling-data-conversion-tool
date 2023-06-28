@@ -1,14 +1,11 @@
 package openwrestling.model.controller;
 
-import openwrestling.PrintGameControllerSummary;
 import openwrestling.database.Database;
 import openwrestling.file.Import;
 import openwrestling.model.controller.nextDay.PromotionSettingsManager;
-import openwrestling.model.gameObjects.EventTemplate;
+import openwrestling.model.gameObjects.Contract;
 import openwrestling.model.gameObjects.Worker;
-import openwrestling.model.segment.constants.EventFrequency;
 import openwrestling.model.segment.constants.Gender;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -19,7 +16,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +34,15 @@ public class GameControllerTest {
         File sourceDirectory = new File("test import databases\\clean");
 
         if (doImport) {
-            List<String> sourceImportDataDirectories = List.of("1993", "1997", "2003", "2019 February", "2021 March");
+            List<String> sourceImportDataDirectories = List.of(
+                    "1993",
+                    "1997"
+                    ,
+                    "2003"
+                    ,
+                    "2019 February",
+                    "2021 March"
+            );
             sourceImportDataDirectories.forEach(importSourceDirectoryName -> {
                 File importSourceDirectory = new File("test import databases\\" + importSourceDirectoryName + "\\DATA");
 
@@ -77,6 +81,12 @@ public class GameControllerTest {
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
 
+        firstWorker1993();
+        workerWithManager1993();
+
+    }
+
+    private void firstWorker1993() {
         Worker firstWorker = gameController.getWorkerManager().getWorkers().get(0);
 
         assertThat(firstWorker.getName()).startsWith("C");
@@ -125,7 +135,19 @@ public class GameControllerTest {
         assertThat(firstWorker.getSecondaryFinisherName()).isNotEqualTo(firstWorker.getPrimaryFinisherName());
         assertThat(firstWorker.getSecondaryFinisherType()).isEqualTo("Submission");
 
+        List<Contract> contracts = gameController.getContractManager().getContracts(firstWorker);
+        assertThat(contracts.size()).isEqualTo(1);
+        Contract contract = contracts.get(0);
+        assertThat(contract.getPushLevel()).isEqualTo(4);
+        assertThat(contract.getDisposition()).isEqualTo("F");
+
+
+    }
+
+    private void workerWithManager1993() {
         Worker workerWithManager = gameController.getWorkerManager().getWorker(341);
+
+
 
         assertThat(workerWithManager.getName()).startsWith("G");
         assertThat(workerWithManager.getName()).hasSize(14);
@@ -145,6 +167,12 @@ public class GameControllerTest {
         assertThat(workerWithManager.isFullTime()).isEqualTo(true);
         assertThat(workerWithManager.isMainRoster()).isEqualTo(true);
         assertThat(workerWithManager.getManager().getWorkerID()).isEqualTo(246);
+
+        List<Contract> contracts = gameController.getContractManager().getContracts(workerWithManager);
+        assertThat(contracts.size()).isEqualTo(1);
+        Contract contract = contracts.get(0);
+        assertThat(contract.getPushLevel()).isEqualTo(2);
+        assertThat(contract.getDisposition()).isEqualTo("H");
     }
 
 
@@ -156,6 +184,59 @@ public class GameControllerTest {
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
 
+        Worker firstWorker = gameController.getWorkerManager().getWorkers().get(0);
+
+        assertThat(firstWorker.getName()).startsWith("C");
+        assertThat(firstWorker.getName()).hasSize(13);
+        assertThat(firstWorker.getWorkerID()).isEqualTo(1);
+        assertThat(firstWorker.getShortName()).startsWith("J");
+        assertThat(firstWorker.getShortName()).hasSize(7);
+        assertThat(firstWorker.getImageFileName()).startsWith("C");
+        assertThat(firstWorker.getImageFileName()).endsWith(".jpg");
+        assertThat(firstWorker.getImageFileName()).hasSize(17);
+        assertThat(firstWorker.getImportKey()).isEqualTo(256);
+        assertThat(firstWorker.getStriking()).isEqualTo(68);
+        assertThat(firstWorker.getFlying()).isEqualTo(88);
+        assertThat(firstWorker.getWrestling()).isEqualTo(84);
+        assertThat(firstWorker.getStiffness()).isEqualTo(54);
+        assertThat(firstWorker.getSelling()).isEqualTo(93);
+        assertThat(firstWorker.getCharisma()).isEqualTo(93);
+        assertThat(firstWorker.getBehaviour()).isEqualTo(95);
+        assertThat(firstWorker.getAttitude()).isEqualTo(95);
+        assertThat(firstWorker.getPopularity()).isEqualTo(45);
+        assertThat(firstWorker.getAge()).isEqualTo(27);
+        assertThat(firstWorker.getGender()).isEqualTo(Gender.MALE);
+        assertThat(firstWorker.isFullTime()).isEqualTo(true);
+        assertThat(firstWorker.isMainRoster()).isEqualTo(true);
+        assertThat(firstWorker.getManager()).isEqualTo(null);
+
+        assertThat(firstWorker.isHighSpots()).isFalse();
+        assertThat(firstWorker.isShooting()).isFalse();
+        assertThat(firstWorker.isFonzFactor()).isTrue();
+        assertThat(firstWorker.isSuperstarLook()).isTrue();
+        assertThat(firstWorker.isDiva()).isFalse();
+        assertThat(firstWorker.isMenacing()).isFalse();
+        assertThat(firstWorker.isAnnouncer()).isTrue();
+        assertThat(firstWorker.isBooker()).isFalse();
+        assertThat(firstWorker.isTrainer()).isFalse();
+
+        assertThat(firstWorker.getBirthMonth()).isEqualTo(11);
+        assertThat(firstWorker.getWeight()).isEqualTo("L");
+
+        assertThat(firstWorker.isSpeaks()).isTrue();
+
+        assertThat(firstWorker.getNationality()).isEqualTo("American");
+
+        assertThat(firstWorker.getWage()).isEqualTo(25000);
+
+        assertThat(firstWorker.getPrimaryFinisherName()).startsWith("L");
+        assertThat(firstWorker.getPrimaryFinisherName()).hasSize(10);
+        assertThat(firstWorker.getPrimaryFinisherType()).isEqualTo("Submission");
+        assertThat(firstWorker.getSecondaryFinisherName()).startsWith("L");
+        assertThat(firstWorker.getSecondaryFinisherName()).hasSize(10);
+        assertThat(firstWorker.getSecondaryFinisherName()).isNotEqualTo(firstWorker.getPrimaryFinisherName());
+        assertThat(firstWorker.getSecondaryFinisherType()).isEqualTo("Ground");
+
     }
 
     @Test
@@ -166,6 +247,56 @@ public class GameControllerTest {
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
 
+        Worker firstWorker = gameController.getWorkerManager().getWorkers().get(0);
+
+        assertThat(firstWorker.getName()).startsWith("C");
+        assertThat(firstWorker.getName()).hasSize(13);
+        assertThat(firstWorker.getWorkerID()).isEqualTo(1);
+        assertThat(firstWorker.getShortName()).startsWith("J");
+        assertThat(firstWorker.getShortName()).hasSize(7);
+        assertThat(firstWorker.getImageFileName()).isEqualTo("None");
+        assertThat(firstWorker.getImportKey()).isEqualTo(256);
+        assertThat(firstWorker.getStriking()).isEqualTo(70);
+        assertThat(firstWorker.getFlying()).isEqualTo(88);
+        assertThat(firstWorker.getWrestling()).isEqualTo(92);
+        assertThat(firstWorker.getStiffness()).isEqualTo(60);
+        assertThat(firstWorker.getSelling()).isEqualTo(90);
+        assertThat(firstWorker.getCharisma()).isEqualTo(100);
+        assertThat(firstWorker.getBehaviour()).isEqualTo(100);
+        assertThat(firstWorker.getAttitude()).isEqualTo(100);
+        assertThat(firstWorker.getPopularity()).isEqualTo(97);
+        assertThat(firstWorker.getAge()).isEqualTo(32);
+        assertThat(firstWorker.getGender()).isEqualTo(Gender.MALE);
+        assertThat(firstWorker.isFullTime()).isEqualTo(true);
+        assertThat(firstWorker.isMainRoster()).isEqualTo(true);
+        assertThat(firstWorker.getManager()).isEqualTo(null);
+
+        assertThat(firstWorker.isHighSpots()).isFalse();
+        assertThat(firstWorker.isShooting()).isFalse();
+        assertThat(firstWorker.isFonzFactor()).isTrue();
+        assertThat(firstWorker.isSuperstarLook()).isTrue();
+        assertThat(firstWorker.isDiva()).isFalse();
+        assertThat(firstWorker.isMenacing()).isFalse();
+        assertThat(firstWorker.isAnnouncer()).isTrue();
+        assertThat(firstWorker.isBooker()).isFalse();
+        assertThat(firstWorker.isTrainer()).isTrue();
+
+        assertThat(firstWorker.getBirthMonth()).isEqualTo(11);
+        assertThat(firstWorker.getWeight()).isEqualTo("H");
+
+        assertThat(firstWorker.isSpeaks()).isTrue();
+
+        assertThat(firstWorker.getNationality()).isEqualTo("Other");
+
+        assertThat(firstWorker.getWage()).isEqualTo(190000);
+
+        assertThat(firstWorker.getPrimaryFinisherName()).startsWith("L");
+        assertThat(firstWorker.getPrimaryFinisherName()).hasSize(10);
+        assertThat(firstWorker.getPrimaryFinisherType()).isEqualTo("Ground");
+        assertThat(firstWorker.getSecondaryFinisherName()).startsWith("W");
+        assertThat(firstWorker.getSecondaryFinisherName()).hasSize(16);
+        assertThat(firstWorker.getSecondaryFinisherName()).isNotEqualTo(firstWorker.getPrimaryFinisherName());
+        assertThat(firstWorker.getSecondaryFinisherType()).isEqualTo("Submission");
 
     }
 
@@ -189,7 +320,118 @@ public class GameControllerTest {
 
         assertThat(gameController.getWorkerManager().getWorkers()).hasSize(workerCount);
 
+        femaleWrestlerTest2021();
 
+        Worker worker = gameController.getWorkerManager().getWorker(339);
+
+        assertThat(worker.getName()).startsWith("K");
+        assertThat(worker.getName()).hasSize(11);
+        assertThat(worker.getWorkerID()).isEqualTo(339);
+        assertThat(worker.getShortName()).startsWith("O");
+        assertThat(worker.getShortName()).hasSize(5);
+        assertThat(worker.getImageFileName()).startsWith("K");
+        assertThat(worker.getImageFileName()).endsWith(".jpg");
+        assertThat(worker.getImageFileName()).hasSize(15);
+        assertThat(worker.getImportKey()).isEqualTo(43272);
+        assertThat(worker.getStriking()).isEqualTo(78);
+        assertThat(worker.getFlying()).isEqualTo(86);
+        assertThat(worker.getWrestling()).isEqualTo(87);
+        assertThat(worker.getStiffness()).isEqualTo(54);
+        assertThat(worker.getSelling()).isEqualTo(91);
+        assertThat(worker.getCharisma()).isEqualTo(92);
+        assertThat(worker.getBehaviour()).isEqualTo(87);
+        assertThat(worker.getAttitude()).isEqualTo(91);
+        assertThat(worker.getPopularity()).isEqualTo(86);
+        assertThat(worker.getAge()).isEqualTo(37);
+        assertThat(worker.getGender()).isEqualTo(Gender.MALE);
+        assertThat(worker.isFullTime()).isEqualTo(true);
+        assertThat(worker.isMainRoster()).isEqualTo(true);
+
+        assertThat(worker.getManager().getWorkerID()).isEqualTo(2521);
+        Worker manager = gameController.getWorkerManager().getWorker(2521);
+        assertThat(manager.getName()).startsWith("D");
+
+        assertThat(worker.isHighSpots()).isTrue();
+        assertThat(worker.isShooting()).isFalse();
+        assertThat(worker.isFonzFactor()).isTrue();
+        assertThat(worker.isSuperstarLook()).isTrue();
+        assertThat(worker.isDiva()).isFalse();
+        assertThat(worker.isMenacing()).isFalse();
+        assertThat(worker.isAnnouncer()).isFalse();
+        assertThat(worker.isBooker()).isFalse();
+        assertThat(worker.isTrainer()).isTrue();
+
+        assertThat(worker.getBirthMonth()).isEqualTo(10);
+        assertThat(worker.getWeight()).isEqualTo("L");
+
+        assertThat(worker.isSpeaks()).isTrue();
+
+        assertThat(worker.getNationality()).isEqualTo("Canadian");
+
+        assertThat(worker.getWage()).isEqualTo(45000);
+
+        assertThat(worker.getPrimaryFinisherName()).startsWith("O");
+        assertThat(worker.getPrimaryFinisherName()).hasSize(17);
+        assertThat(worker.getPrimaryFinisherType()).isEqualTo("Impact");
+        assertThat(worker.getSecondaryFinisherName()).startsWith("V");
+        assertThat(worker.getSecondaryFinisherName()).hasSize(9);
+        assertThat(worker.getSecondaryFinisherType()).isEqualTo("Impact");
+
+
+    }
+
+    void femaleWrestlerTest2021() {
+        Worker worker = gameController.getWorkerManager().getWorker(1274);
+
+        assertThat(worker.getName()).startsWith("D");
+        assertThat(worker.getName()).hasSize(15);
+        assertThat(worker.getWorkerID()).isEqualTo(1274);
+        assertThat(worker.getShortName()).startsWith("D");
+        assertThat(worker.getShortName()).hasSize(6);
+        assertThat(worker.getImageFileName()).startsWith("D");
+        assertThat(worker.getImageFileName()).endsWith(".jpg");
+        assertThat(worker.getImageFileName()).hasSize(18);
+        assertThat(worker.getImportKey()).isEqualTo(44292);
+        assertThat(worker.getStriking()).isEqualTo(47);
+        assertThat(worker.getFlying()).isEqualTo(62);
+        assertThat(worker.getWrestling()).isEqualTo(67);
+        assertThat(worker.getStiffness()).isEqualTo(33);
+        assertThat(worker.getSelling()).isEqualTo(72);
+        assertThat(worker.getCharisma()).isEqualTo(72);
+        assertThat(worker.getBehaviour()).isEqualTo(85);
+        assertThat(worker.getAttitude()).isEqualTo(85);
+        assertThat(worker.getPopularity()).isEqualTo(50);
+        assertThat(worker.getAge()).isEqualTo(26);
+        assertThat(worker.getGender()).isEqualTo(Gender.FEMALE);
+        assertThat(worker.isFullTime()).isEqualTo(true);
+        assertThat(worker.isMainRoster()).isEqualTo(true);
+
+        assertThat(worker.getManager()).isNull();
+
+
+        assertThat(worker.isHighSpots()).isFalse();
+        assertThat(worker.isShooting()).isFalse();
+        assertThat(worker.isFonzFactor()).isFalse();
+        assertThat(worker.isSuperstarLook()).isTrue();
+        assertThat(worker.isDiva()).isTrue();
+        assertThat(worker.isMenacing()).isFalse();
+        assertThat(worker.isAnnouncer()).isFalse();
+        assertThat(worker.isBooker()).isFalse();
+        assertThat(worker.isTrainer()).isFalse();
+
+        assertThat(worker.getBirthMonth()).isEqualTo(6);
+        assertThat(worker.getWeight()).isEqualTo("L");
+
+        assertThat(worker.isSpeaks()).isTrue();
+
+        assertThat(worker.getNationality()).isEqualTo("American");
+
+        assertThat(worker.getWage()).isEqualTo(20000);
+
+        assertThat(worker.getPrimaryFinisherName()).startsWith("C");
+        assertThat(worker.getPrimaryFinisherType()).isEqualTo("Impact");
+        assertThat(worker.getSecondaryFinisherName()).startsWith("V");
+        assertThat(worker.getSecondaryFinisherType()).isEqualTo("Submission");
     }
 
 

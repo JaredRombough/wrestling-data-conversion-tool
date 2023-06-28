@@ -30,6 +30,10 @@ public class Contract extends GameObject implements Serializable, iContract, iDa
     private boolean pushed;
     private int appearanceCost;
     private int monthlyCost;
+    private int pushLevel;
+    private String disposition;
+
+    private int gimmickID;
 
     public Contract(LocalDate startDate, Worker worker, Promotion promotion) {
         active = true;

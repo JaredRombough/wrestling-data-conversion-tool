@@ -127,6 +127,15 @@ public class WorkerEntity extends Entity {
     private String secondaryFinisherType;
 
     @DatabaseField
+    private int stiffness;
+
+    @DatabaseField
+    private int selling;
+
+    @DatabaseField
+    private int attitude;
+
+    @DatabaseField
     private int minimumPopularity;
 
     @DatabaseField(foreign = true)

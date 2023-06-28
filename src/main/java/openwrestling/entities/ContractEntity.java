@@ -46,6 +46,15 @@ public class ContractEntity extends Entity {
     private boolean pushed;
 
     @DatabaseField
+    private int pushLevel;
+
+    @DatabaseField
+    private String disposition;
+
+    @DatabaseField
+    private int gimmickID;
+
+    @DatabaseField
     private int appearanceCost;
 
     @DatabaseField

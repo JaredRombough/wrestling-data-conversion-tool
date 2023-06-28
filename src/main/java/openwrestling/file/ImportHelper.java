@@ -461,8 +461,7 @@ public class ImportHelper extends Logging {
             worker.setShooting(currentLine.charAt(165) == 'ÿ');
             worker.setFonzFactor(currentLine.charAt(279) == 'ÿ');
             worker.setSuperstarLook(currentLine.charAt(273) == 'ÿ');
-            //todo reset by editor, women only?
-            worker.setDiva(currentLine.charAt(161) == 'ÿ');
+            worker.setDiva(currentLine.charAt(293) == 'ÿ');
             worker.setMenacing(currentLine.charAt(277) == 'ÿ');
             worker.setAnnouncer(currentLine.charAt(281) == 'ÿ');
             worker.setBooker(currentLine.charAt(283) == 'ÿ');
@@ -474,6 +473,10 @@ public class ImportHelper extends Logging {
             worker.setWage((long) wageInt * 1000);
             worker.setPrimaryFinisherName(currentLine.substring(189 , 213).trim());
             worker.setSecondaryFinisherName(currentLine.substring(220 , 241).trim());
+
+            worker.setStiffness(hexStringToInt(hexLine.get(153)));
+            worker.setSelling(hexStringToInt(hexLine.get(155)));
+            worker.setAttitude(hexStringToInt(hexLine.get(163)));
 
             //primary finisher type (ground)
             //ground -> corner
@@ -495,12 +498,12 @@ public class ImportHelper extends Logging {
 
             if(currentLine.charAt(216) == 'ÿ' && currentLine.charAt(218) == 'ÿ') {
                 primaryFinisherType = "Corner";
-            } else if(currentLine.charAt(216) != 'ÿ' && currentLine.charAt(218) != 'ÿ') {
-                primaryFinisherType = "Impact";
+            } else if(currentLine.charAt(214) == 'ÿ' && currentLine.charAt(216) != 'ÿ' && currentLine.charAt(218) != 'ÿ') {
+                primaryFinisherType = "Submission";
             } else if(currentLine.charAt(216) != 'ÿ' && currentLine.charAt(218) == 'ÿ') {
                 primaryFinisherType = "Ground";
-            } else if(currentLine.charAt(214) == 'ÿ' && currentLine.charAt(216) != 'ÿ') {
-                primaryFinisherType = "Submission";
+            } else if(currentLine.charAt(214) != 'ÿ' && currentLine.charAt(216) != 'ÿ' && currentLine.charAt(218) != 'ÿ') {
+                primaryFinisherType = "Impact";
             }else if(currentLine.charAt(216) == 'ÿ' && currentLine.charAt(218) != 'ÿ') {
                 primaryFinisherType = "Top Rope";
             }else if(currentLine.charAt(214) == 'ÿ' && currentLine.charAt(216) == 'ÿ') {
@@ -578,11 +581,19 @@ public class ImportHelper extends Logging {
         List<List<String>> hexLines = getHexLines(importFolder, "wrestler", 307);
 
         hexLines.forEach(hexLine -> {
+            String currentLine = hexLineToTextString(hexLine);
+
             Worker worker = workers.stream()
                     .filter(worker1 -> worker1.getImportKey() == hexStringToInt(hexLine.get(1) + hexLine.get(2)))
                     .findFirst()
                     .orElse(null);
             int a = hexStringToInt(hexLine.get(65));
+            //todo 50 = manager
+            //todo 25 = non wrestler
+            //todo 6 = jobber, 1 main event
+            int aPush = hexStringToInt(hexLine.get(82));
+            char aDisposition = currentLine.charAt(88);
+            int aGimmick = hexStringToInt(hexLine.get(167));
             int b = hexStringToInt(hexLine.get(67));
             int c = hexStringToInt(hexLine.get(69));
             int[] promoKeys = new int[]{a, b, c};
@@ -600,6 +611,12 @@ public class ImportHelper extends Logging {
                                 .endDate(ContractUtils.contractEndDate(gameStartDate, RandomUtils.nextInt(0, 12)))
                                 .build();
                         int cost = calculateWorkerContractCost(worker, exclusive);
+
+                        if(promotion.getImportKey() == a) {
+                            contract.setPushLevel(aPush);
+                            contract.setDisposition(String.valueOf(aDisposition));
+                            contract.setGimmickID(aGimmick);
+                        }
 
                         if (exclusive) {
                             contract.setMonthlyCost(cost);

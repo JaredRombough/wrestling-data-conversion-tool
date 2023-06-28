@@ -59,6 +59,11 @@ public class Worker extends GameObject implements Serializable, SegmentItem, iPe
 
     private Long wage;
 
+    private int stiffness;
+    private int selling;
+    private int attitude;
+
+
     public void addContract(Contract contract) {
         contracts.add(contract);
     }
