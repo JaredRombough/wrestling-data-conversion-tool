@@ -587,6 +587,11 @@ public class ImportHelper extends Logging {
                     .filter(worker1 -> worker1.getImportKey() == hexStringToInt(hexLine.get(1) + hexLine.get(2)))
                     .findFirst()
                     .orElse(null);
+
+            boolean unsackable = currentLine.charAt(259) == 'ÿ';
+            boolean creativeControl = currentLine.charAt(78) == 'ÿ';
+
+
             int a = hexStringToInt(hexLine.get(65));
             //todo 50 = manager
             //todo 25 = non wrestler
@@ -620,6 +625,8 @@ public class ImportHelper extends Logging {
                                 .exclusive(exclusive)
                                 .active(true)
                                 .startDate(gameStartDate)
+                                .unsackable(unsackable)
+                                .creativeControl(creativeControl)
                                 .endDate(ContractUtils.contractEndDate(gameStartDate, RandomUtils.nextInt(0, 12)))
                                 .build();
                         int cost = calculateWorkerContractCost(worker, exclusive);

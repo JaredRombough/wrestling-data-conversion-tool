@@ -58,6 +58,12 @@ public class ContractEntity extends Entity {
     private int managerID;
 
     @DatabaseField
+    private boolean creativeControl;
+
+    @DatabaseField
+    private boolean unsackable;
+
+    @DatabaseField
     private long appearanceCost;
 
     @DatabaseField

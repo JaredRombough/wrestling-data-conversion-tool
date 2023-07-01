@@ -36,6 +36,9 @@ public class Contract extends GameObject implements Serializable, iContract, iDa
     private int gimmickID;
     private long managerID;
 
+    private boolean creativeControl;
+    private boolean unsackable;
+
     public Contract(LocalDate startDate, Worker worker, Promotion promotion) {
         active = true;
         lastShowDate = startDate;

@@ -389,6 +389,8 @@ public class GameControllerTest {
         assertThat(contract1.getDisposition()).isEqualTo("H");
         assertThat(contract1.getManagerID()).isEqualTo(2521);
         assertThat(contract1.getGimmickID()).isEqualTo(53);
+        assertThat(contract1.isUnsackable()).isFalse();
+        assertThat(contract1.isCreativeControl()).isFalse();
 
 
         Contract contract2 = contracts.stream().filter(contract -> contract.getPromotion().getName().startsWith("Lu")).findFirst().orElseThrow();
@@ -399,6 +401,8 @@ public class GameControllerTest {
         assertThat(contract2.getPushLevel()).isEqualTo(1);
         assertThat(contract2.getDisposition()).isEqualTo("H");
         assertThat(contract2.getGimmickID()).isEqualTo(35);
+        assertThat(contract2.isUnsackable()).isFalse();
+        assertThat(contract2.isCreativeControl()).isFalse();
 
 
         Contract contract3 = contracts.stream().filter(contract -> contract.getPromotion().getName().startsWith("Im")).findFirst().orElseThrow();
@@ -409,6 +413,29 @@ public class GameControllerTest {
         assertThat(contract3.getPushLevel()).isEqualTo(1);
         assertThat(contract3.getDisposition()).isEqualTo("H");
         assertThat(contract3.getGimmickID()).isEqualTo(11);
+        assertThat(contract3.isUnsackable()).isFalse();
+        assertThat(contract3.isCreativeControl()).isFalse();
+
+
+        workerWithSpecialContract();
+    }
+
+    void workerWithSpecialContract() {
+        Worker worker = gameController.getWorkerManager().getWorker(2);
+
+        assertThat(worker.getName()).startsWith("T");
+        assertThat(worker.getName()).hasSize(8);
+
+
+        List<Contract> contracts = gameController.getContractManager().getContracts(worker);
+        assertThat(contracts.size()).isEqualTo(1);
+        Contract contract = contracts.get(0);
+
+        assertThat(contract.isCreativeControl()).isTrue();
+        assertThat(contract.isUnsackable()).isTrue();
+        assertThat(contract.getPushLevel()).isEqualTo(25);
+        assertThat(contract.getDisposition()).isEqualTo("T");
+        assertThat(contract.getGimmickID()).isEqualTo(66);
     }
 
     void femaleWrestlerTest2021() {
