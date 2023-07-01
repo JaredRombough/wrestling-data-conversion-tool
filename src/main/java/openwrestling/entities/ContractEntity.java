@@ -55,7 +55,10 @@ public class ContractEntity extends Entity {
     private int gimmickID;
 
     @DatabaseField
-    private int appearanceCost;
+    private int managerID;
+
+    @DatabaseField
+    private long appearanceCost;
 
     @DatabaseField
     private int monthlyCost;

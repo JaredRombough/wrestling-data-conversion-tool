@@ -594,8 +594,20 @@ public class ImportHelper extends Logging {
             int aPush = hexStringToInt(hexLine.get(82));
             char aDisposition = currentLine.charAt(88);
             int aGimmick = hexStringToInt(hexLine.get(167));
+            int aManagerImportKey = hexStringToInt(hexLine.get(121) + hexLine.get(122));
+
             int b = hexStringToInt(hexLine.get(67));
+            int bPush = hexStringToInt(hexLine.get(84));
+            char bDisposition = currentLine.charAt(89);
+            int bGimmick = hexStringToInt(hexLine.get(169));
+            int bManagerImportKey = hexStringToInt(hexLine.get(123) + hexLine.get(124));
+
             int c = hexStringToInt(hexLine.get(69));
+            int cPush = hexStringToInt(hexLine.get(86));
+            char cDisposition = currentLine.charAt(90);
+            int cGimmick = hexStringToInt(hexLine.get(171));
+            int cManagerImportKey = hexStringToInt(hexLine.get(125) + hexLine.get(126));
+
             int[] promoKeys = new int[]{a, b, c};
             boolean exclusive = hexStringToLetter(hexLine.get(71)).equals("W");
 
@@ -616,6 +628,32 @@ public class ImportHelper extends Logging {
                             contract.setPushLevel(aPush);
                             contract.setDisposition(String.valueOf(aDisposition));
                             contract.setGimmickID(aGimmick);
+                            if (aManagerImportKey != 0) {
+                                Worker manager = workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst().orElse(null);
+                                if (manager != null) {
+                                    contract.setManagerID(manager.getWorkerID());
+                                }
+                            }
+                        } else if(promotion.getImportKey() == b) {
+                            contract.setPushLevel(bPush);
+                            contract.setDisposition(String.valueOf(bDisposition));
+                            contract.setGimmickID(bGimmick);
+                            if (bManagerImportKey != 0) {
+                                Worker manager = workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst().orElse(null);
+                                if (manager != null) {
+                                    contract.setManagerID(manager.getWorkerID());
+                                }
+                            }
+                        } else if(promotion.getImportKey() == c) {
+                            contract.setPushLevel(cPush);
+                            contract.setDisposition(String.valueOf(cDisposition));
+                            contract.setGimmickID(cGimmick);
+                            if (cManagerImportKey != 0) {
+                                Worker manager = workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst().orElse(null);
+                                if (manager != null) {
+                                    contract.setManagerID(manager.getWorkerID());
+                                }
+                            }
                         }
 
                         if (exclusive) {

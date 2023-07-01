@@ -34,6 +34,7 @@ public class Contract extends GameObject implements Serializable, iContract, iDa
     private String disposition;
 
     private int gimmickID;
+    private long managerID;
 
     public Contract(LocalDate startDate, Worker worker, Promotion promotion) {
         active = true;

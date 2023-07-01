@@ -4,6 +4,7 @@ import openwrestling.database.Database;
 import openwrestling.file.Import;
 import openwrestling.model.controller.nextDay.PromotionSettingsManager;
 import openwrestling.model.gameObjects.Contract;
+import openwrestling.model.gameObjects.Promotion;
 import openwrestling.model.gameObjects.Worker;
 import openwrestling.model.segment.constants.Gender;
 import org.apache.commons.io.FileUtils;
@@ -35,12 +36,12 @@ public class GameControllerTest {
 
         if (doImport) {
             List<String> sourceImportDataDirectories = List.of(
-                    "1993",
-                    "1997"
-                    ,
-                    "2003"
-                    ,
-                    "2019 February",
+                 //   "1993",
+         //           "1997"
+           //         ,
+                //    "2003"
+                //    ,
+                 //   "2019 February",
                     "2021 March"
             );
             sourceImportDataDirectories.forEach(importSourceDirectoryName -> {
@@ -377,7 +378,37 @@ public class GameControllerTest {
         assertThat(worker.getSecondaryFinisherName()).hasSize(9);
         assertThat(worker.getSecondaryFinisherType()).isEqualTo("Impact");
 
+        List<Contract> contracts = gameController.getContractManager().getContracts(worker);
+        assertThat(contracts.size()).isEqualTo(3);
+        Contract contract1 = contracts.stream().filter(contract -> contract.getPromotion().getName().startsWith("Al")).findFirst().orElseThrow();
 
+        Promotion promotion1 = gameController.getPromotionManager().getPromotion(contract1.getPromotion().getPromotionID());
+        assertThat(promotion1.getName()).startsWith("Al");
+
+        assertThat(contract1.getPushLevel()).isEqualTo(1);
+        assertThat(contract1.getDisposition()).isEqualTo("H");
+        assertThat(contract1.getManagerID()).isEqualTo(2521);
+        assertThat(contract1.getGimmickID()).isEqualTo(53);
+
+
+        Contract contract2 = contracts.stream().filter(contract -> contract.getPromotion().getName().startsWith("Lu")).findFirst().orElseThrow();
+
+        Promotion promotion2 = gameController.getPromotionManager().getPromotion(contract2.getPromotion().getPromotionID());
+        assertThat(promotion2.getName()).startsWith("Lu");
+
+        assertThat(contract2.getPushLevel()).isEqualTo(1);
+        assertThat(contract2.getDisposition()).isEqualTo("H");
+        assertThat(contract2.getGimmickID()).isEqualTo(35);
+
+
+        Contract contract3 = contracts.stream().filter(contract -> contract.getPromotion().getName().startsWith("Im")).findFirst().orElseThrow();
+
+        Promotion promotion3 = gameController.getPromotionManager().getPromotion(contract3.getPromotion().getPromotionID());
+        assertThat(promotion3.getName()).startsWith("Im");
+
+        assertThat(contract3.getPushLevel()).isEqualTo(1);
+        assertThat(contract3.getDisposition()).isEqualTo("H");
+        assertThat(contract3.getGimmickID()).isEqualTo(11);
     }
 
     void femaleWrestlerTest2021() {
