@@ -36,12 +36,12 @@ public class GameControllerTest {
 
         if (doImport) {
             List<String> sourceImportDataDirectories = List.of(
-                 //   "1993",
-         //           "1997"
-           //         ,
-                //    "2003"
-                //    ,
-                 //   "2019 February",
+                    "1993",
+                    "1997"
+                    ,
+                    "2003"
+                    ,
+                    "2019 February",
                     "2021 March"
             );
             sourceImportDataDirectories.forEach(importSourceDirectoryName -> {

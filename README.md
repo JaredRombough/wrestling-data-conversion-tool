@@ -1,7 +1,8 @@
-# Open Wrestling
-Wrestling booking simulation
+# Wrestling data conversion tool
+
 
 https://openwrestling.itch.io/open-wrestling
+
 
 To compile and run, use Intellij with the JavaFX maven plugin.
 
