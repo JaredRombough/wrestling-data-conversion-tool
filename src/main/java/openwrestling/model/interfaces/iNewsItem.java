@@ -1,15 +1,16 @@
 package openwrestling.model.interfaces;
 
+import openwrestling.model.gameObjects.Promotion;
+
 import java.time.LocalDate;
 import java.util.List;
-import openwrestling.model.gameObjects.Promotion;
 
 public interface iNewsItem {
 
-    public String getSummary();
+    String getSummary();
 
-    public LocalDate getDate();
+    LocalDate getDate();
 
-    public List<Promotion> getPromotions();
+    List<Promotion> getPromotions();
 
 }

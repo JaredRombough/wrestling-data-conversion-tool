@@ -50,9 +50,7 @@ public final class ContractUtils {
 
         int unitCost;
 
-        List<Integer> pricePoints = new ArrayList<>();
-
-        pricePoints.addAll(Arrays.asList(50, 50, 100, 150, 150, 300, 600, 1000, 2000, 10000, 20000));
+        List<Integer> pricePoints = new ArrayList<>(Arrays.asList(50, 50, 100, 150, 150, 300, 600, 1000, 2000, 10000, 20000));
 
         double nearest10 = staff.getSkill() / 10 * 10;
         double multiplier = (staff.getSkill() - nearest10) / 10;

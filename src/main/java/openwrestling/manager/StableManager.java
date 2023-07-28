@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class StableManager extends GameObjectManager {
 
-    private WorkerManager workerManager;
+    private final WorkerManager workerManager;
     @Getter
     private List<Stable> stables;
     private List<StableMember> stableMembers;

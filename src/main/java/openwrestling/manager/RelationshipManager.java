@@ -25,17 +25,15 @@ public class RelationshipManager extends GameObjectManager {
 
 
     private List<WorkerRelationship> workerRelationships = new ArrayList<>();
-    //private List<MoraleRelationship> moraleRelationships = new ArrayList<>();
-    private Map<Long, MoraleRelationship> moraleRelationshipMap = new HashMap<>();
+    private List<MoraleRelationship> moraleRelationships = new ArrayList<>();
+    private final Map<Long, MoraleRelationship> moraleRelationshipMap = new HashMap<>();
 
     @Override
     public void selectData() {
         workerRelationships = getDatabase().selectAll(WorkerRelationship.class);
-        //moraleRelationships = getDatabase().selectAll(MoraleRelationship.class);
+        moraleRelationships = getDatabase().selectAll(MoraleRelationship.class);
         List<MoraleRelationship> moraleRelationships = getDatabase().selectAll(MoraleRelationship.class);
-        moraleRelationships.forEach(relationship -> {
-            moraleRelationshipMap.put(relationship.getRelationshipID(), relationship);
-        });
+        moraleRelationships.forEach(relationship -> moraleRelationshipMap.put(relationship.getRelationshipID(), relationship));
     }
 
     public List<MoraleRelationship> getMoraleRelationships() {
@@ -65,14 +63,10 @@ public class RelationshipManager extends GameObjectManager {
     }
 
     public List<WorkerRelationship> getWorkerRelationships(Worker worker) {
-        List<WorkerRelationship> relationships = new ArrayList<>();
-        relationships.addAll(
-                this.workerRelationships.stream()
-                        .filter(workerRelationship -> workerRelationship.getWorker1().getWorkerID() == worker.getWorkerID()
-                                || workerRelationship.getWorker2().getWorkerID() == worker.getWorkerID())
-                        .collect(Collectors.toList())
-        );
-        return relationships;
+        return new ArrayList<>(this.workerRelationships.stream()
+                .filter(workerRelationship -> workerRelationship.getWorker1().getWorkerID() == worker.getWorkerID()
+                        || workerRelationship.getWorker2().getWorkerID() == worker.getWorkerID())
+                .collect(Collectors.toList()));
     }
 
     public MoraleRelationship getOrCreateMoraleRelationship(Worker worker, Promotion promotion) {
@@ -126,9 +120,7 @@ public class RelationshipManager extends GameObjectManager {
     public List<MoraleRelationship> createOrUpdateMoraleRelationships(List<MoraleRelationship> workerRelationships) {
         List<MoraleRelationship> savedRelationships = getDatabase().insertList(workerRelationships);
         //this.moraleRelationships = getDatabase().selectAll(MoraleRelationship.class);
-        savedRelationships.forEach(moraleRelationship -> {
-            moraleRelationshipMap.put(moraleRelationship.getRelationshipID(), moraleRelationship);
-        });
+        savedRelationships.forEach(moraleRelationship -> moraleRelationshipMap.put(moraleRelationship.getRelationshipID(), moraleRelationship));
         return savedRelationships;
     }
 

@@ -2,7 +2,7 @@ package openwrestling.model.interfaces;
 
 public interface iSegmentValidation {
 
-    public String getCss();
+    String getCss();
 
-    public String getSymbol();
+    String getSymbol();
 }

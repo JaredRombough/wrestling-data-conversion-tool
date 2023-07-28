@@ -57,5 +57,5 @@ public enum MatchLength implements iSegmentLength {
         public int value() {
             return 60;
         }
-    };
+    }
 }

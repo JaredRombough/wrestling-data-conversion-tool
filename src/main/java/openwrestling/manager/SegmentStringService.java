@@ -331,7 +331,7 @@ public class SegmentStringService implements Serializable {
                 return tagTeam.getName();
             }
         }
-        return String.format("");
+        return "";
     }
 
     public String getVsMatchString(Segment segment) {

@@ -45,7 +45,7 @@ import static openwrestling.model.utility.ContractUtils.calculateWorkerContractC
 @AllArgsConstructor
 public class ImportHelper extends Logging {
 
-    private File importFolder;
+    private final File importFolder;
 
 
     List<EventTemplate> tvDat(List<Promotion> promotions, List<RosterSplit> rosterSplits) {
@@ -636,30 +636,24 @@ public class ImportHelper extends Logging {
                             contract.setDisposition(String.valueOf(aDisposition));
                             contract.setGimmickID(aGimmick);
                             if (aManagerImportKey != 0) {
-                                Worker manager = workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst().orElse(null);
-                                if (manager != null) {
-                                    contract.setManagerID(manager.getWorkerID());
-                                }
+                                workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst()
+                                        .ifPresent(manager -> contract.setManagerID(manager.getWorkerID()));
                             }
                         } else if(promotion.getImportKey() == b) {
                             contract.setPushLevel(bPush);
                             contract.setDisposition(String.valueOf(bDisposition));
                             contract.setGimmickID(bGimmick);
                             if (bManagerImportKey != 0) {
-                                Worker manager = workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst().orElse(null);
-                                if (manager != null) {
-                                    contract.setManagerID(manager.getWorkerID());
-                                }
+                                workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst()
+                                        .ifPresent(manager -> contract.setManagerID(manager.getWorkerID()));
                             }
                         } else if(promotion.getImportKey() == c) {
                             contract.setPushLevel(cPush);
                             contract.setDisposition(String.valueOf(cDisposition));
                             contract.setGimmickID(cGimmick);
                             if (cManagerImportKey != 0) {
-                                Worker manager = workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst().orElse(null);
-                                if (manager != null) {
-                                    contract.setManagerID(manager.getWorkerID());
-                                }
+                                workers.stream().filter(w -> w.getImportKey() == aManagerImportKey).findFirst()
+                                        .ifPresent(manager -> contract.setManagerID(manager.getWorkerID()));
                             }
                         }
 
@@ -687,17 +681,15 @@ public class ImportHelper extends Logging {
                     .filter(rosterSplitName -> !rosterSplitName.equals("None"))
                     .collect(Collectors.toList());
 
-            rosterSplitNames.forEach(rosterSplitName -> {
-                rosterSplits.stream()
-                        .filter(rosterSplit -> rosterSplit.getName().equals(rosterSplitName))
-                        .findFirst()
-                        .ifPresent(split ->
-                                workers.stream()
-                                        .filter(worker1 -> worker1.getImportKey() == hexStringToInt(hexLine.get(1) + hexLine.get(2)))
-                                        .findFirst()
-                                        .ifPresent(worker -> split.getWorkers().add(worker))
-                        );
-            });
+            rosterSplitNames.forEach(rosterSplitName -> rosterSplits.stream()
+                    .filter(rosterSplit -> rosterSplit.getName().equals(rosterSplitName))
+                    .findFirst()
+                    .ifPresent(split ->
+                            workers.stream()
+                                    .filter(worker1 -> worker1.getImportKey() == hexStringToInt(hexLine.get(1) + hexLine.get(2)))
+                                    .findFirst()
+                                    .ifPresent(worker -> split.getWorkers().add(worker))
+                    ));
 
 
         });

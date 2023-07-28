@@ -1,11 +1,12 @@
 package openwrestling.model.interfaces;
 
-import java.time.LocalDate;
 import openwrestling.model.gameObjects.Promotion;
+
+import java.time.LocalDate;
 
 public interface iEvent {
 
-    public Promotion getPromotion();
+    Promotion getPromotion();
 
-    public LocalDate getDate();
+    LocalDate getDate();
 }

@@ -222,8 +222,7 @@ public class EventFactory extends Logging {
                         offeree.getWorkers().get(0));
             }
         } else if (JoinTeamType.NEW_STABLE.equals(segment.getJoinTeamType())) {
-            List<Worker> newMembers = new ArrayList<>();
-            newMembers.addAll(offerer.getWorkers());
+            List<Worker> newMembers = new ArrayList<>(offerer.getWorkers());
             offerees.forEach(offeree -> {
                 if (ResponseType.YES.equals(offeree.getResponse())) {
                     newMembers.addAll(offeree.getWorkers());

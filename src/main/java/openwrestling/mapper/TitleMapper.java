@@ -4,7 +4,6 @@ import openwrestling.entities.TitleEntity;
 import openwrestling.model.gameObjects.Title;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper

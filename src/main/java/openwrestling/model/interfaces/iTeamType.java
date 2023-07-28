@@ -6,7 +6,7 @@ import openwrestling.model.segment.constants.TeamType;
 import java.util.List;
 
 public interface iTeamType {
-    public boolean droppable(SegmentItem segmentItem);
+    boolean droppable(SegmentItem segmentItem);
 
-    public List<TeamType> getShared();
+    List<TeamType> getShared();
 }

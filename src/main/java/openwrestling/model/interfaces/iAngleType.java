@@ -4,14 +4,14 @@ import openwrestling.model.segment.constants.TeamType;
 
 public interface iAngleType {
 
-    public int minWorkers();
+    int minWorkers();
 
-    public int defaultWorkers();
+    int defaultWorkers();
 
-    public TeamType addTeamType();
+    TeamType addTeamType();
 
-    public TeamType mainTeamType();
+    TeamType mainTeamType();
 
-    public String resultString();
+    String resultString();
 
 }

@@ -38,36 +38,30 @@ public class Profile extends Logging {
             logger.log(Level.DEBUG, "Transactions: " + gameController.getBankAccountManager().getTransactions(promotion).size());
             gameController.getBankAccountManager().getTransactions(promotion).stream()
                     .collect(groupingBy(Transaction::getType, toList()))
-                    .forEach((transactionType, transactions) -> {
-                        logger.log(Level.DEBUG, String.format("%s %d %d",
-                                transactionType.toString(),
-                                transactions.size(),
-                                transactions.stream()
-                                        .mapToLong(Transaction::getAmount)
-                                        .sum()));
-                    });
+                    .forEach((transactionType, transactions) -> logger.log(Level.DEBUG, String.format("%s %d %d",
+                            transactionType.toString(),
+                            transactions.size(),
+                            transactions.stream()
+                                    .mapToLong(Transaction::getAmount)
+                                    .sum())));
 
 
         });
         Map<Long, List<Segment>> map = new HashMap<>();
-        gameController.getSegmentManager().getSegments().forEach(segment -> {
-            segment.getMatchParticipants().forEach(worker -> {
-                if (!map.containsKey(worker.getWorkerID())) {
-                    map.put(worker.getWorkerID(), new ArrayList<>());
-                    map.get(worker.getWorkerID()).add(segment);
-                } else {
-                    map.get(worker.getWorkerID()).add(segment);
-                }
-            });
-        });
+        gameController.getSegmentManager().getSegments().forEach(segment -> segment.getMatchParticipants().forEach(worker -> {
+            if (!map.containsKey(worker.getWorkerID())) {
+                map.put(worker.getWorkerID(), new ArrayList<>());
+                map.get(worker.getWorkerID()).add(segment);
+            } else {
+                map.get(worker.getWorkerID()).add(segment);
+            }
+        }));
 
 
         map.entrySet().stream()
                 .sorted(Comparator.comparingInt(entry -> entry.getValue().size()))
-                .forEach(workerListEntry -> {
-                    logger.log(Level.DEBUG, String.format("%s had %d matches",
-                            gameController.getWorkerManager().getWorker(workerListEntry.getKey()).getName(),
-                            workerListEntry.getValue().size()));
-                });
+                .forEach(workerListEntry -> logger.log(Level.DEBUG, String.format("%s had %d matches",
+                        gameController.getWorkerManager().getWorker(workerListEntry.getKey()).getName(),
+                        workerListEntry.getValue().size())));
     }
 }

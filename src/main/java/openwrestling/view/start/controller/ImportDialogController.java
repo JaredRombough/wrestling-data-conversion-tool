@@ -10,18 +10,13 @@ import javafx.stage.Stage;
 import openwrestling.view.utility.interfaces.ControllerBase;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 
 public class ImportDialogController extends ControllerBase implements Initializable {
 
-//    @FXML
-//    private Button picsPathButton;
-//
-//    @FXML
-//    private Button logosPathButton;
+
 
     @FXML
     private Button dataPathButton;
@@ -29,11 +24,7 @@ public class ImportDialogController extends ControllerBase implements Initializa
     @FXML
     private Button startGameButton;
 
-//    @FXML
-//    private Text picsPathLabel;
-//
-//    @FXML
-//    private Text logosPathLabel;
+
 
     @FXML
     private Text dataPathLabel;
@@ -45,15 +36,11 @@ public class ImportDialogController extends ControllerBase implements Initializa
     private Stage stage;
 
     @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException, Exception {
+    private void handleButtonAction(ActionEvent event) throws Exception {
 
-//        if (event.getSource() == picsPathButton) {
-//            picsPath = chooseDirectory(picsPath, "Worker Pictures");
-//        } else if (event.getSource() == logosPathButton) {
-//            logosPath = chooseDirectory(logosPath, "Promotion Logos");
-//        } else
+
             if (event.getSource() == dataPathButton) {
-            dataPath = chooseDirectory(dataPath, "Scenario .DAT Files");
+            dataPath = chooseDirectory(dataPath);
         } else if (event.getSource() == startGameButton) {
             stage.close();
             mainApp.newImportGame(dataPath, picsPath, logosPath);
@@ -65,10 +52,10 @@ public class ImportDialogController extends ControllerBase implements Initializa
         this.stage = stage;
     }
 
-    private File chooseDirectory(File original, String title) {
+    private File chooseDirectory(File original) {
 
         DirectoryChooser dc = new DirectoryChooser();
-        dc.titleProperty().set("Select Folder Containing " + title);
+        dc.titleProperty().set("Select Folder Containing Scenario .DAT Files");
 
         File importFolder = dc.showDialog(mainApp.getPrimaryStage());
 
@@ -83,8 +70,6 @@ public class ImportDialogController extends ControllerBase implements Initializa
     @Override
     public void updateLabels() {
 
-//        picsPathLabel.setText(picsPath.toString());
-//        logosPathLabel.setText(logosPath.toString());
         dataPathLabel.setText(dataPath.toString());
 
     }

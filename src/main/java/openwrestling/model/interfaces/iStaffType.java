@@ -3,6 +3,6 @@ package openwrestling.model.interfaces;
 
 
 public interface iStaffType {
-    public int workerRatio();
-    public int diffRatio();
+    int workerRatio();
+    int diffRatio();
 }

@@ -7,7 +7,7 @@ import openwrestling.database.Database;
 public abstract class GameObjectManager extends Logging {
 
     @Getter
-    private Database database;
+    private final Database database;
 
     public GameObjectManager(Database database) {
         this.database = database;

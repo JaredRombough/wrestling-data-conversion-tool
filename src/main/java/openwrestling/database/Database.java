@@ -6,9 +6,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
 import openwrestling.Logging;
 import openwrestling.database.queries.GameObjectQuery;
 import openwrestling.entities.BankAccountEntity;
@@ -117,9 +114,9 @@ import java.util.stream.Collectors;
 
 public class Database extends Logging {
 
-    private String dbUrl;
-    private MapperFactory mapperFactory;
-    private Map<Class<? extends GameObject>, Class<? extends Entity>> daoClassMap = new HashMap<>() {{
+    private final String dbUrl;
+
+    private final Map<Class<? extends GameObject>, Class<? extends Entity>> daoClassMap = new HashMap<>() {{
         put(Promotion.class, PromotionEntity.class);
         put(Worker.class, WorkerEntity.class);
         put(Stable.class, StableEntity.class);
@@ -150,9 +147,6 @@ public class Database extends Logging {
         put(MatchRules.class, MatchRulesEntity.class);
     }};
 
-//    private Map<Class<? extends GameObject>, GameObjectMapper> daoClassMap2 = new HashMap<>() {{
-//        put(GameSetting.class, GameSettingMapper.INSTANCE);
-//    }};
 
     //Test constructor
     public Database(String dbPath) {
@@ -171,7 +165,6 @@ public class Database extends Logging {
     public List selectList(GameObjectQuery gameObjectQuery) {
         try {
             ConnectionSource connectionSource = new JdbcConnectionSource(this.dbUrl);
-           // MapperFacade mapper = this.getMapperFactory().getMapperFacade();
             List<WorkerEntity> results = gameObjectQuery.getQueryBuilder(connectionSource).query();
             List<Worker> roster = new ArrayList<>();
             results.forEach(entity -> roster.add((Worker) mapItToGameObject(entity)));
@@ -273,15 +266,11 @@ public class Database extends Logging {
 
     public <T extends GameObject> void updateList(List<T> gameObjects) {
         long start = System.currentTimeMillis();
-        try {
-            if (gameObjects.isEmpty()) {
-                return;
-            }
-            List<? extends Entity> entities = gameObjectsToEntities(gameObjects);
-            insertOrUpdateEntityList(entities);
-        } catch (Exception e) {
-            throw e;
+        if (gameObjects.isEmpty()) {
+            return;
         }
+        List<? extends Entity> entities = gameObjectsToEntities(gameObjects);
+        insertOrUpdateEntityList(entities);
         logger.log(Level.DEBUG,
                 String.format("updateList sourceClass %s size %s took %d",
                         gameObjects.get(0).getClass().getName(),
@@ -321,18 +310,6 @@ public class Database extends Logging {
         }
     }
 
-//    private MapperFactory getMapperFactory() {
-//        if (mapperFactory == null) {
-//            mapperFactory = new DefaultMapperFactory.Builder().build();
-//            mapperFactory.getConverterFactory().registerConverter(new LocalDateConverter());
-//            mapperFactory.classMap(SegmentTemplateEntity.class, SegmentTemplate.class)
-//                    .byDefault()
-//                    .customize(new SegmentTemplateMapper()
-//                    ).register();
-//        }
-//        return mapperFactory;
-//    }
-
     private void insertOrUpdateChildList(List<? extends Entity> toInsert, ConnectionSource connectionSource) {
         if (toInsert.isEmpty()) {
             return;
@@ -366,143 +343,125 @@ public class Database extends Logging {
         Class<? extends Entity> targetClass = daoClassMap.get(gameObjects.get(0).getClass());
 
 
-      //  GameSettingMapper gameSettingMapper =  GameSettingMapper.INSTANCE.
-       // BoundMapperFacade boundedMapper = getMapperFactory().getMapperFacade(gameObjects.get(0).getClass(), targetClass);
-
         return gameObjects.stream()
-                .map(gameObject -> {
-//                    Object entity;
-//                    try {
-//                        entity = targetClass.getConstructor().newInstance();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        throw new RuntimeException(e);
-//                    }
-
-                    Object result = mapIt(gameObject);
-                    return result;
-                })
+                .map(gameObject -> (Object) mapIt(gameObject))
                 .map(targetClass::cast)
                 .collect(Collectors.toList());
     }
 
     private Entity mapIt(GameObject object) {
-        if(object instanceof BankAccount) {
+        if (object instanceof BankAccount) {
             return BankAccountMapper.INSTANCE.toEntity((BankAccount) object);
-        } else  if(object instanceof BroadcastTeamMember) {
+        } else if (object instanceof BroadcastTeamMember) {
             return BroadcastTeamMemberMapper.INSTANCE.toEntity((BroadcastTeamMember) object);
-        } else if(object instanceof Contract) {
+        } else if (object instanceof Contract) {
             return ContractMapper.INSTANCE.toEntity((Contract) object);
-        } else if(object instanceof EntourageMember) {
+        } else if (object instanceof EntourageMember) {
             return EntourageMemberMapper.INSTANCE.toEntity((EntourageMember) object);
-        }else if(object instanceof Event) {
+        } else if (object instanceof Event) {
             return EventMapper.INSTANCE.toEntity((Event) object);
-        }else if(object instanceof EventTemplate) {
+        } else if (object instanceof EventTemplate) {
             return EventTemplateMapper.INSTANCE.toEntity((EventTemplate) object);
-        }else if(object instanceof GameSetting) {
+        } else if (object instanceof GameSetting) {
             return GameSettingMapper.INSTANCE.toEntity((GameSetting) object);
-        }else if(object instanceof Injury) {
+        } else if (object instanceof Injury) {
             return InjuryMapper.INSTANCE.toEntity((Injury) object);
-        }else if(object instanceof MatchRules) {
+        } else if (object instanceof MatchRules) {
             return MatchRulesMapper.INSTANCE.toEntity((MatchRules) object);
-        }else if(object instanceof MonthlyReview) {
+        } else if (object instanceof MonthlyReview) {
             return MonthlyReviewMapper.INSTANCE.toEntity((MonthlyReview) object);
-        }else if(object instanceof MoraleRelationship) {
+        } else if (object instanceof MoraleRelationship) {
             return MoraleRelationshipMapper.INSTANCE.toEntity((MoraleRelationship) object);
-        }else if(object instanceof Promotion) {
+        } else if (object instanceof Promotion) {
             return PromotionMapper.INSTANCE.toEntity((Promotion) object);
-        }else if(object instanceof RosterSplit) {
+        } else if (object instanceof RosterSplit) {
             return RosterSplitMapper.INSTANCE.toEntity((RosterSplit) object);
-        }else if(object instanceof RosterSplitWorker) {
+        } else if (object instanceof RosterSplitWorker) {
             return RosterSplitWorkerMapper.INSTANCE.toEntity((RosterSplitWorker) object);
-        }else if(object instanceof Segment) {
+        } else if (object instanceof Segment) {
             return SegmentMapper.INSTANCE.toEntity((Segment) object);
-        }else if(object instanceof SegmentTeam) {
+        } else if (object instanceof SegmentTeam) {
             return SegmentTeamMapper.INSTANCE.toEntity((SegmentTeam) object);
-        }else if(object instanceof SegmentTemplate) {
+        } else if (object instanceof SegmentTemplate) {
             return SegmentTemplateMapper.INSTANCE.toEntity((SegmentTemplate) object);
-        }else if(object instanceof Stable) {
+        } else if (object instanceof Stable) {
             return StableMapper.INSTANCE.toEntity((Stable) object);
-        }else if(object instanceof StableMember) {
+        } else if (object instanceof StableMember) {
             return StableMemberMapper.INSTANCE.toEntity((StableMember) object);
-        }else if(object instanceof StaffContract) {
+        } else if (object instanceof StaffContract) {
             return StaffContractMapper.INSTANCE.toEntity((StaffContract) object);
-        }else if(object instanceof StaffMember) {
+        } else if (object instanceof StaffMember) {
             return StaffMemberMapper.INSTANCE.toEntity((StaffMember) object);
-        }else if(object instanceof TagTeam) {
+        } else if (object instanceof TagTeam) {
             return TagTeamMapper.INSTANCE.toEntity((TagTeam) object);
-        }else if(object instanceof Title) {
+        } else if (object instanceof Title) {
             return TitleMapper.INSTANCE.toEntity((Title) object, new CycleAvoidingMappingContext());
-        }else if(object instanceof TitleReign) {
+        } else if (object instanceof TitleReign) {
             return TitleReignMapper.INSTANCE.toEntity((TitleReign) object);
-        }else if(object instanceof Transaction) {
+        } else if (object instanceof Transaction) {
             return TransactionMapper.INSTANCE.toEntity((Transaction) object);
-        }else if(object instanceof Worker) {
+        } else if (object instanceof Worker) {
             return WorkerMapper.INSTANCE.toEntity((Worker) object);
-        }else if(object instanceof WorkerRelationship) {
+        } else if (object instanceof WorkerRelationship) {
             return WorkerRelationshipMapper.INSTANCE.toEntity((WorkerRelationship) object);
         }
         throw new NotImplementedException("not yet");
     }
 
     private GameObject mapItToGameObject(Entity entity) {
-//        if(entity instanceof GameSettingEntity) {
-//            return GameSettingMapper.INSTANCE.toClass((GameSettingEntity) entity);
-//        }
-
-        if(entity instanceof BankAccountEntity) {
+        if (entity instanceof BankAccountEntity) {
             return BankAccountMapper.INSTANCE.toClass((BankAccountEntity) entity);
-        } else  if(entity instanceof BroadcastTeamMemberEntity) {
+        } else if (entity instanceof BroadcastTeamMemberEntity) {
             return BroadcastTeamMemberMapper.INSTANCE.toClass((BroadcastTeamMemberEntity) entity);
-        } else if(entity instanceof ContractEntity) {
+        } else if (entity instanceof ContractEntity) {
             return ContractMapper.INSTANCE.toClass((ContractEntity) entity);
-        } else if(entity instanceof EntourageMemberEntity) {
+        } else if (entity instanceof EntourageMemberEntity) {
             return EntourageMemberMapper.INSTANCE.toClass((EntourageMemberEntity) entity);
-        } else if(entity instanceof EventEntity) {
+        } else if (entity instanceof EventEntity) {
             return EventMapper.INSTANCE.toClass((EventEntity) entity);
-        } else if(entity instanceof EventTemplateEntity) {
+        } else if (entity instanceof EventTemplateEntity) {
             return EventTemplateMapper.INSTANCE.toClass((EventTemplateEntity) entity);
-        } else if(entity instanceof GameSettingEntity) {
+        } else if (entity instanceof GameSettingEntity) {
             return GameSettingMapper.INSTANCE.toClass((GameSettingEntity) entity);
-        } else if(entity instanceof InjuryEntity) {
+        } else if (entity instanceof InjuryEntity) {
             return InjuryMapper.INSTANCE.toClass((InjuryEntity) entity);
-        } else if(entity instanceof MatchRulesEntity) {
+        } else if (entity instanceof MatchRulesEntity) {
             return MatchRulesMapper.INSTANCE.toClass((MatchRulesEntity) entity);
-        } else if(entity instanceof MonthlyReviewEntity) {
+        } else if (entity instanceof MonthlyReviewEntity) {
             return MonthlyReviewMapper.INSTANCE.toClass((MonthlyReviewEntity) entity);
-        } else if(entity instanceof MoraleRelationshipEntity) {
+        } else if (entity instanceof MoraleRelationshipEntity) {
             return MoraleRelationshipMapper.INSTANCE.toClass((MoraleRelationshipEntity) entity);
-        } else if(entity instanceof PromotionEntity) {
+        } else if (entity instanceof PromotionEntity) {
             return PromotionMapper.INSTANCE.toClass((PromotionEntity) entity);
-        } else if(entity instanceof RosterSplitEntity) {
+        } else if (entity instanceof RosterSplitEntity) {
             return RosterSplitMapper.INSTANCE.toClass((RosterSplitEntity) entity);
-        } else if(entity instanceof RosterSplitWorkerEntity) {
+        } else if (entity instanceof RosterSplitWorkerEntity) {
             return RosterSplitWorkerMapper.INSTANCE.toClass((RosterSplitWorkerEntity) entity);
-        } else if(entity instanceof SegmentEntity) {
+        } else if (entity instanceof SegmentEntity) {
             return SegmentMapper.INSTANCE.toClass((SegmentEntity) entity);
-        } else if(entity instanceof SegmentTeamEntity) {
+        } else if (entity instanceof SegmentTeamEntity) {
             return SegmentTeamMapper.INSTANCE.toClass((SegmentTeamEntity) entity);
-        } else if(entity instanceof SegmentTemplateEntity) {
+        } else if (entity instanceof SegmentTemplateEntity) {
             return SegmentTemplateMapper.INSTANCE.toClass((SegmentTemplateEntity) entity);
-        } else if(entity instanceof StableEntity) {
+        } else if (entity instanceof StableEntity) {
             return StableMapper.INSTANCE.toClass((StableEntity) entity);
-        } else if(entity instanceof StableMemberEntity) {
+        } else if (entity instanceof StableMemberEntity) {
             return StableMemberMapper.INSTANCE.toClass((StableMemberEntity) entity);
-        } else if(entity instanceof StaffContractEntity) {
+        } else if (entity instanceof StaffContractEntity) {
             return StaffContractMapper.INSTANCE.toClass((StaffContractEntity) entity);
-        } else if(entity instanceof StaffMemberEntity) {
+        } else if (entity instanceof StaffMemberEntity) {
             return StaffMemberMapper.INSTANCE.toClass((StaffMemberEntity) entity);
-        } else if(entity instanceof TagTeamEntity) {
+        } else if (entity instanceof TagTeamEntity) {
             return TagTeamMapper.INSTANCE.toClass((TagTeamEntity) entity);
-        } else if(entity instanceof TitleEntity) {
+        } else if (entity instanceof TitleEntity) {
             return TitleMapper.INSTANCE.toClass((TitleEntity) entity, new CycleAvoidingMappingContext());
-        } else if(entity instanceof TitleReignEntity) {
+        } else if (entity instanceof TitleReignEntity) {
             return TitleReignMapper.INSTANCE.toClass((TitleReignEntity) entity);
-        } else if(entity instanceof TransactionEntity) {
+        } else if (entity instanceof TransactionEntity) {
             return TransactionMapper.INSTANCE.toClass((TransactionEntity) entity);
-        } else if(entity instanceof WorkerEntity) {
+        } else if (entity instanceof WorkerEntity) {
             return WorkerMapper.INSTANCE.toClass((WorkerEntity) entity);
-        } else if(entity instanceof WorkerRelationshipEntity) {
+        } else if (entity instanceof WorkerRelationshipEntity) {
             return WorkerRelationshipMapper.INSTANCE.toClass((WorkerRelationshipEntity) entity);
         }
         throw new NotImplementedException("not yet");
@@ -513,20 +472,8 @@ public class Database extends Logging {
             return new ArrayList<>();
         }
 
-//        BoundMapperFacade boundedMapper = getMapperFactory().getMapperFacade(entities.get(0).getClass(), targetClass);
-
         return entities.stream()
-                .map(entity -> {
-//                    Object gameObject;
-//                    try {
-//                        gameObject = targetClass.getConstructor().newInstance();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        throw new RuntimeException(e);
-//                    }
-
-                    return mapItToGameObject(entity);
-                })
+                .map(this::mapItToGameObject)
                 .map(targetClass::cast)
                 .collect(Collectors.toList());
     }

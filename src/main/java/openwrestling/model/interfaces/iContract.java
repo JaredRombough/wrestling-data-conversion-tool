@@ -1,9 +1,10 @@
 package openwrestling.model.interfaces;
 
-import java.time.LocalDate;
 import openwrestling.model.gameObjects.Promotion;
 import openwrestling.model.gameObjects.StaffMember;
 import openwrestling.model.gameObjects.Worker;
+
+import java.time.LocalDate;
 
 /**
  *
@@ -11,28 +12,28 @@ import openwrestling.model.gameObjects.Worker;
  */
 public interface iContract {
 
-    public iPerson getPerson();
+    iPerson getPerson();
 
-    public LocalDate getEndDate();
+    LocalDate getEndDate();
 
-    public LocalDate getStartDate();
+    LocalDate getStartDate();
 
-    public Promotion getPromotion();
+    Promotion getPromotion();
 
-    public boolean isExclusive();
+    boolean isExclusive();
 
-    public int getMonthlyCost();
+    int getMonthlyCost();
 
-    public int getAppearanceCost();
+    int getAppearanceCost();
 
-    public void setActive(boolean active);
+    void setActive(boolean active);
 
-    public Worker getWorker();
+    Worker getWorker();
 
-    public StaffMember getStaff();
+    StaffMember getStaff();
     
-    public LocalDate getLastShowDate();
+    LocalDate getLastShowDate();
     
-    public void setEndDate(LocalDate date);
+    void setEndDate(LocalDate date);
 
 }

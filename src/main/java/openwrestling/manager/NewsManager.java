@@ -14,7 +14,7 @@ import org.apache.commons.lang3.RandomUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -209,11 +209,11 @@ public class NewsManager extends GameObjectManager implements Serializable {
             if (newsItemBySegmentItemMap.get(key).containsKey(newsItem.getDate())) {
                 newsItemBySegmentItemMap.get(key).get(newsItem.getDate()).add(newsItem);
             } else {
-                newsItemBySegmentItemMap.get(key).put(newsItem.getDate(), new ArrayList<>(Arrays.asList(newsItem)));
+                newsItemBySegmentItemMap.get(key).put(newsItem.getDate(), new ArrayList<>(Collections.singletonList(newsItem)));
             }
         } else {
             Map<LocalDate, List<NewsItem>> map = new HashMap<>();
-            List<NewsItem> items = new ArrayList<>(Arrays.asList(newsItem));
+            List<NewsItem> items = new ArrayList<>(Collections.singletonList(newsItem));
             map.put(newsItem.getDate(), items);
             newsItemBySegmentItemMap.put(key, map);
         }

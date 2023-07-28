@@ -4,8 +4,6 @@ import javafx.fxml.Initializable;
 import openwrestling.MainApp;
 import openwrestling.model.controller.GameController;
 
-import java.util.ResourceBundle;
-
 public abstract class ControllerBase implements Initializable {
 
     public MainApp mainApp;
@@ -16,11 +14,11 @@ public abstract class ControllerBase implements Initializable {
         this.mainApp = mainApp;
     }
 
-    public void setCurrent(Object obj) {};
+    public void setCurrent(Object obj) {}
 
-    public void updateLabels() {};
-    
-    public void focusLost() {};
+    public void updateLabels() {}
+
+    public void focusLost() {}
 
 
 }

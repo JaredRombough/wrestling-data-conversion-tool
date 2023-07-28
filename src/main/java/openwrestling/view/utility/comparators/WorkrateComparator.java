@@ -1,8 +1,9 @@
 package openwrestling.view.utility.comparators;
 
-import java.util.Comparator;
 import openwrestling.model.gameObjects.Worker;
 import openwrestling.model.utility.ModelUtils;
+
+import java.util.Comparator;
 
 public class WorkrateComparator implements Comparator<Worker> {
 
@@ -10,7 +11,7 @@ public class WorkrateComparator implements Comparator<Worker> {
     public int compare(Worker w1, Worker w2) {
         if (w1 != null && w2 != null) {
 
-            return -Integer.valueOf(ModelUtils.getMatchWorkRating(w1)).compareTo(ModelUtils.getMatchWorkRating(w2));
+            return -Integer.compare(ModelUtils.getMatchWorkRating(w1), ModelUtils.getMatchWorkRating(w2));
         }
 
         return 0;

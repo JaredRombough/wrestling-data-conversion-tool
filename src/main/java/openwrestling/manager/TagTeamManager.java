@@ -58,9 +58,7 @@ public class TagTeamManager extends GameObjectManager implements Serializable {
         List<TagTeam> teamViews = new ArrayList<>();
         List<Worker> roster = workerManager.getRoster(promotion);
         getTagTeams().stream().filter((tagTeam) -> (roster
-                .containsAll(tagTeam.getWorkers()))).forEach((tagTeam) -> {
-            teamViews.add(tagTeam);
-        });
+                .containsAll(tagTeam.getWorkers()))).forEach(teamViews::add);
         return teamViews;
     }
 

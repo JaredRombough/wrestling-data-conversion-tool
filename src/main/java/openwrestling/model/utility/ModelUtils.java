@@ -11,7 +11,6 @@ import openwrestling.model.gameObjects.Worker;
 import openwrestling.model.segment.constants.SegmentType;
 import openwrestling.model.segment.constants.TeamType;
 import openwrestling.model.segment.opitons.MatchRules;
-import openwrestling.view.utility.GameScreen;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;

@@ -44,8 +44,7 @@ public class ImportTest {
         assertThat(promotions.get(8).getLevel()).isEqualTo(1);
         assertThat(promotions.get(5).getLevel()).isEqualTo(3);
         assertThat(promotions.get(16).getLevel()).isEqualTo(2);
-        for (int i = 0; i < promotions.size(); i++) {
-            Promotion promotion = promotions.get(i);
+        for (Promotion promotion : promotions) {
             assertThat(promotion.getName()).isNotNull();
             assertThat(promotion.getLevel()).isNotNull();
             assertThat(promotion.getShortName()).isNotNull();

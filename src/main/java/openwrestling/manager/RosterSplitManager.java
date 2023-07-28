@@ -2,7 +2,6 @@ package openwrestling.manager;
 
 import lombok.Getter;
 import openwrestling.database.Database;
-import openwrestling.model.gameObjects.Promotion;
 import openwrestling.model.gameObjects.RosterSplit;
 import openwrestling.model.gameObjects.RosterSplitWorker;
 import openwrestling.model.gameObjects.Worker;

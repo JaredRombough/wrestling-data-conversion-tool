@@ -2,7 +2,7 @@ package openwrestling.model.interfaces;
 
 public interface iMatchFinish {
 
-    public boolean nodq();
-    public String description();
+    boolean nodq();
+    String description();
 
 }

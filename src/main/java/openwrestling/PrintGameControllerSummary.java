@@ -110,15 +110,13 @@ public class PrintGameControllerSummary extends Logging {
 
         logger.log(Level.FATAL, "Current contracts (should match or exceed minimum roster size): " + currentContracts.size());
 
-        currentContracts.forEach(contract -> {
-            logger.printf(Level.FATAL, "%d %s  Start: %s End:%s Morale: %d",
-                    contract.getWorker().getWorkerID(),
-                    contract.getWorker().getName(),
-                    contract.getStartDate(),
-                    contract.getEndDate(),
-                    gameController.getRelationshipManager().getMoraleRelationship(contract.getWorker(), promotion).getLevel()
-            );
-        });
+        currentContracts.forEach(contract -> logger.printf(Level.FATAL, "%d %s  Start: %s End:%s Morale: %d",
+                contract.getWorker().getWorkerID(),
+                contract.getWorker().getName(),
+                contract.getStartDate(),
+                contract.getEndDate(),
+                gameController.getRelationshipManager().getMoraleRelationship(contract.getWorker(), promotion).getLevel()
+        ));
 
         List<Contract> pastContracts = gameController.getContractManager().getContracts(promotion).stream()
                 .filter(contract -> contract.getEndDate().isBefore(gameController.getDateManager().today()))
@@ -126,15 +124,13 @@ public class PrintGameControllerSummary extends Logging {
                 .collect(Collectors.toList());
 
         logger.log(Level.FATAL, "Past contracts: " + pastContracts.size());
-        pastContracts.forEach(contract -> {
-            logger.printf(Level.FATAL, "%d %s  Start: %s End:%s Morale: %d",
-                    contract.getWorker().getWorkerID(),
-                    contract.getWorker().getName(),
-                    contract.getStartDate(),
-                    contract.getEndDate(),
-                    gameController.getRelationshipManager().getMoraleRelationship(contract.getWorker(), promotion).getLevel()
-            );
-        });
+        pastContracts.forEach(contract -> logger.printf(Level.FATAL, "%d %s  Start: %s End:%s Morale: %d",
+                contract.getWorker().getWorkerID(),
+                contract.getWorker().getName(),
+                contract.getStartDate(),
+                contract.getEndDate(),
+                gameController.getRelationshipManager().getMoraleRelationship(contract.getWorker(), promotion).getLevel()
+        ));
 
         List<Contract> pastContractsForWorkersNotOnRoster = gameController.getContractManager().getContracts(promotion).stream()
                 .filter(contract -> contract.getEndDate().isBefore(gameController.getDateManager().today()))
@@ -143,15 +139,13 @@ public class PrintGameControllerSummary extends Logging {
                 .collect(Collectors.toList());
 
         logger.log(Level.FATAL, "Past contracts (workers not on roster): " + pastContractsForWorkersNotOnRoster.size());
-        pastContractsForWorkersNotOnRoster.forEach(contract -> {
-            logger.printf(Level.FATAL, "%d %s  Start: %s End:%s Morale: %d",
-                    contract.getWorker().getWorkerID(),
-                    contract.getWorker().getName(),
-                    contract.getStartDate(),
-                    contract.getEndDate(),
-                    gameController.getRelationshipManager().getMoraleRelationship(contract.getWorker(), promotion).getLevel()
-            );
-        });
+        pastContractsForWorkersNotOnRoster.forEach(contract -> logger.printf(Level.FATAL, "%d %s  Start: %s End:%s Morale: %d",
+                contract.getWorker().getWorkerID(),
+                contract.getWorker().getName(),
+                contract.getStartDate(),
+                contract.getEndDate(),
+                gameController.getRelationshipManager().getMoraleRelationship(contract.getWorker(), promotion).getLevel()
+        ));
     }
 
     private void printEvents(GameController gameController, Promotion promotion) {

@@ -1,27 +1,17 @@
 package openwrestling;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
-import openwrestling.database.Database;
 import openwrestling.file.Import;
-import openwrestling.model.SegmentItem;
 import openwrestling.model.controller.GameController;
-import openwrestling.model.segment.constants.Gender;
 import openwrestling.view.start.controller.ImportDialogController;
 import openwrestling.view.utility.GameScreen;
 import openwrestling.view.utility.ScreenCode;
 import openwrestling.view.utility.ViewUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -29,9 +19,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -47,7 +35,6 @@ public class MainApp extends Application {
     private static final int DEMO_WORKER_IMAGES = 0;
     private final transient Logger logger;
     private final List<GameScreen> screens;
-    private final boolean cssEnabled;
     @Getter
     private final ResourceBundle resx;
     @Getter
@@ -56,7 +43,7 @@ public class MainApp extends Application {
     private File picsFolder;
     private File logosFolder;
     private File dataFolder;
-    private boolean preRun = false;
+
     @Getter
     private boolean randomGame;
     private GameScreen currentScreen;
@@ -67,7 +54,7 @@ public class MainApp extends Application {
     public MainApp() {
         this.screens = new ArrayList<>();
 
-        this.cssEnabled = true;
+
         logger = LogManager.getLogger(getClass());
         Configurator.setRootLevel(Level.DEBUG);
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
@@ -88,7 +75,7 @@ public class MainApp extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
         primaryStage = stage;
         primaryStage.setTitle("Open Wrestling " + VERSION);
@@ -142,10 +129,6 @@ public class MainApp extends Application {
 
                     ViewUtils.generateAlert("Import error", "Resources could not be validated.", error).showAndWait();
 
-                } else {
-//                    this.gameController = importer.getGameController();
-//                    initRootLayout();
-//                    showStartGameScreen();
                 }
             } catch (Exception ex) {
 
@@ -184,44 +167,6 @@ public class MainApp extends Application {
         }
 
 
-//    public Image loadImageFromPath(String imagePath) {
-//        return ViewUtils.loadImage(getClass().getResourceAsStream(imagePath));
-//    }
-//
-//    public Image getDefaultWorkerImage(SegmentItem segmentItem) {
-//        if (segmentItem.getGender().equals(Gender.MALE)) {
-//            if (DEMO_WORKER_IMAGES > 0) {
-//                int randomImageNumber = RandomUtils.nextInt(1, DEMO_WORKER_IMAGES + 1);
-//                String imagePath = String.format("images/demo/%d.jpg", randomImageNumber);
-//                return loadImageFromPath(imagePath);
-//            }
-//            return loadImageFromPath("images/workerDefaultMale.jpg");
-//        } else {
-//            return loadImageFromPath("images/workerDefaultFemale.jpg");
-//        }
-//
-//    }
-
-//
-//
-//
-//    private void loadScreens() {
-//        //this will load into memory all the screens that we will be switching between
-//        //so we aren't creating a new screen each time
-//        List<ScreenCode> screensToLoad = new ArrayList<>(Arrays.asList(ScreenCode.FINANCIAL,
-//                ScreenCode.CALENDAR,
-//                ScreenCode.BROWSER,
-//                ScreenCode.EVENT,
-//                ScreenCode.WORKER_OVERVIEW,
-//                ScreenCode.NEWS,
-//                ScreenCode.RESULTS
-//        ));
-//
-//        for (ScreenCode screen : screensToLoad) {
-//            screens.add(ViewUtils.loadScreenFromFXML(screen, this, gameController));
-//        }
-//    }
-//
 
 
     public GameScreen show(ScreenCode code) {
@@ -232,13 +177,6 @@ public class MainApp extends Application {
         GameScreen screen = ViewUtils.getByCode(screens, code);
         currentScreen = screen;
 
-   //     ((BorderPane) ViewUtils.getByCode(screens, ScreenCode.ROOT).pane).setCenter(screen.pane);
-      //  ((RootLayoutController) ViewUtils.getByCode(screens, ScreenCode.ROOT).controller).updateSelectedButton(code);
-
-        //screen.controller.updateLabels();
-//        if (code.equals(ScreenCode.CALENDAR)) {
-//            ((CalendarController) screen.controller).setCurrent(gameController.getDateManager().today());
-//        }
 
         updateLabels();
         return screen;
@@ -250,11 +188,6 @@ public class MainApp extends Application {
         screen.controller.setCurrent(obj);
     }
 
-    public void showStartGameScreen() {
-
-        GameScreen startGameScreen = ViewUtils.loadScreenFromFXML(ScreenCode.START, this, gameController);
-        ((BorderPane) ViewUtils.getByCode(screens, ScreenCode.ROOT).pane).setCenter(startGameScreen.pane);
-    }
 
     /*
     calls the root layout to update the labels

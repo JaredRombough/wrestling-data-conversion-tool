@@ -25,20 +25,12 @@ import openwrestling.manager.StaffManager;
 import openwrestling.manager.TagTeamManager;
 import openwrestling.manager.TitleManager;
 import openwrestling.manager.WorkerManager;
-
 import openwrestling.model.factory.ContractFactory;
 import openwrestling.model.factory.EventFactory;
 import openwrestling.model.factory.MatchFactory;
-import openwrestling.model.gameObjects.Event;
-import openwrestling.model.gameObjects.EventTemplate;
-import openwrestling.model.gameObjects.Promotion;
-import org.apache.logging.log4j.Level;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static openwrestling.model.factory.EventFactory.getInitialEventsForEventTemplate;
 
 @Getter
 public final class GameController extends Logging implements Serializable {
@@ -67,18 +59,11 @@ public final class GameController extends Logging implements Serializable {
     private final GameSettingManager gameSettingManager;
     private final MonthlyReviewManager monthlyReviewManager;
     private final MatchRulesManager matchRulesManager;
-//    private final NextDayController nextDayController;
-//    private final DailyEventBooker dailyEventBooker;
-//    private final DailyContractUpdate dailyContractUpdate;
-//    private final DailyTransactions dailyTransactions;
-//    private final DailyRelationshipUpdate dailyRelationshipUpdate;
-//    private final MonthlyReviewController monthlyReviewController;
-//    private final PromotionController promotionController;
     private final SegmentStringService segmentStringService;
     private final int EVENT_MONTHS = 6;
-    private List<GameObjectManager> managers;
+    private final List<GameObjectManager> managers;
 
-    public GameController(Database database, boolean randomGame) {
+    public GameController(Database database) {
 
         dateManager = new DateManager(database);
 
@@ -130,67 +115,6 @@ public final class GameController extends Logging implements Serializable {
                 relationshipManager,
                 newsManager);
 
-//        promotionController = new PromotionController(
-//                contractFactory,
-//                eventFactory,
-//                contractManager,
-//                dateManager,
-//                titleManager,
-//                workerManager,
-//                matchRulesManager);
-
-//        dailyEventBooker = DailyEventBooker.builder()
-//                .eventManager(eventManager)
-//                .dateManager(dateManager)
-//                .workerManager(workerManager)
-//                .promotionManager(promotionManager)
-//                .promotionController(promotionController)
-//                .build();
-//
-//        dailyContractUpdate = DailyContractUpdate.builder()
-//                .contractFactory(contractFactory)
-//                .contractManager(contractManager)
-//                .promotionManager(promotionManager)
-//                .dateManager(dateManager)
-//                .workerManager(workerManager)
-//                .newsManager(newsManager)
-//                .titleManager(titleManager)
-//                .bankAccountManager(bankAccountManager)
-//                .build();
-//
-//        dailyTransactions = DailyTransactions.builder()
-//                .contractManager(contractManager)
-//                .dateManager(dateManager)
-//                .build();
-//
-//        dailyRelationshipUpdate = DailyRelationshipUpdate.builder()
-//                .relationshipManager(relationshipManager)
-//                .contractManager(contractManager)
-//                .dateManager(dateManager)
-//                .newsManager(newsManager)
-//                .build();
-//
-//        monthlyReviewController = MonthlyReviewController.builder()
-//                .monthlyReviewManager(monthlyReviewManager)
-//                .bankAccountManager(bankAccountManager)
-//                .build();
-//
-//        nextDayController = NextDayController.builder()
-//                .dailyContractUpdate(dailyContractUpdate)
-//                .dailyEventBooker(dailyEventBooker)
-//                .dateManager(dateManager)
-//                .eventManager(eventManager)
-//                .relationshipManager(relationshipManager)
-//                .bankAccountManager(bankAccountManager)
-//                .injuryManager(injuryManager)
-//                .newsManager(newsManager)
-//                .contractManager(contractManager)
-//                .dailyTransactions(dailyTransactions)
-//                .dailyRelationshipUpdate(dailyRelationshipUpdate)
-//                .dailyContractUpdate(dailyContractUpdate)
-//                .promotionManager(promotionManager)
-//                .monthlyReviewController(monthlyReviewController)
-//                .build();
 
         segmentStringService = new SegmentStringService(
                 segmentManager,
@@ -200,17 +124,6 @@ public final class GameController extends Logging implements Serializable {
                 contractManager
         );
 
-//        if (randomGame) {
-//            RandomGameAssetGenerator randomGameAssetGenerator = new RandomGameAssetGenerator(
-//                    contractFactory,
-//                    dateManager,
-//                    promotionManager,
-//                    workerManager,
-//                    staffManager,
-//                    bankAccountManager,
-//                    contractManager);
-//            randomGameAssetGenerator.preparePromotions();
-//        }
 
         managers = List.of(
                 bankAccountManager,
@@ -236,47 +149,12 @@ public final class GameController extends Logging implements Serializable {
 
     }
 
-    public void initializeGameData() {
-        List<EventTemplate> generatedEventTemplates = promotionManager.getPromotions().stream()
-                .filter(promotion -> eventManager.getEventTemplates(promotion).isEmpty())
-                .flatMap(promotion -> EventFactory.generateMonthlyEventTemplates(promotion, dateManager.today()).stream())
-                .collect(Collectors.toList());
-        eventManager.createEventTemplates(generatedEventTemplates);
-
-//        List<Event> initialEvents = eventManager.getEventTemplates().stream()
-//                .flatMap(eventTemplate -> getInitialEventsForEventTemplate(eventTemplate, dateManager.today()).stream())
-//                .collect(Collectors.toList());
-
-//        List<EventTemplate> updatedBookedUntilDates = initialEvents.stream()
-//                .map(Event::getEventTemplate)
-//                .collect(Collectors.toList());
-
-//        eventManager.updateEventTemplates(updatedBookedUntilDates);
-//        eventManager.createEvents(initialEvents);
-//        newsManager.addWelcomeNewsItem(promotionManager.getPlayerPromotion());
-    }
 
     public void loadGameDataFromDatabase() {
         managers.forEach(GameObjectManager::selectData);
         eventManager.refreshSegmentEvents();
     }
 
-//    //only called by MainApp
-//    public void nextDay() {
-//        long start = System.currentTimeMillis();
-//
-//        for (Promotion promotion : promotionManager.getPromotions()) {
-//            injuryManager.dailyUpdate(dateManager.today(), promotion);
-//        }
-//
-//        logger.log(Level.DEBUG, String.format("nextDay before controller %d", System.currentTimeMillis() - start));
-//
-//        nextDayController.nextDay();
-//
-//        dateManager.nextDay();
-//
-//        logger.log(Level.DEBUG, String.format("nextDay end total time %d", System.currentTimeMillis() - start));
-//    }
 
 
 }

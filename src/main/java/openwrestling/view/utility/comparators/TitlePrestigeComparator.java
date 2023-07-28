@@ -1,7 +1,8 @@
 package openwrestling.view.utility.comparators;
 
-import java.util.Comparator;
 import openwrestling.model.gameObjects.Title;
+
+import java.util.Comparator;
 
 public class TitlePrestigeComparator implements Comparator<Title> {
 
@@ -9,7 +10,7 @@ public class TitlePrestigeComparator implements Comparator<Title> {
     public int compare(Title title1, Title title2) {
         if (title1 != null && title2 != null) {
 
-            return -Integer.valueOf(title1.getPrestige()).compareTo(title2.getPrestige());
+            return -Integer.compare(title1.getPrestige(), title2.getPrestige());
         }
 
         return 0;

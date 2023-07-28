@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class Injury extends GameObject {
-    private long InjuryID;
+    private long injuryID;
     private LocalDate expiryDate;
     private LocalDate startDate;
     private Worker worker;

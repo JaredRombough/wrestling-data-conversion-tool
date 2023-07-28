@@ -37,19 +37,17 @@ public class Import {
     ));
     private GameController gameController;
 
-    public String tryImport(File dbFile, File importFolder) throws Exception {
+    public String tryImport(File dbFile, File importFolder) {
         long start = System.currentTimeMillis();
 
         StringBuilder sb = new StringBuilder();
-        filesNeeded.stream().map((s) -> new File(importFolder.getPath() + "\\" + s + ".dat")).filter((f) -> (!f.exists() || f.isDirectory())).forEach((f) -> {
-            sb.append(f.toString()).append(" not found.").append("\n");
-        });
+        filesNeeded.stream().map((s) -> new File(importFolder.getPath() + "\\" + s + ".dat")).filter((f) -> (!f.exists() || f.isDirectory())).forEach((f) -> sb.append(f.toString()).append(" not found.").append("\n"));
 
         if (sb.length() == 0) {
             try {
                 Database database = new Database(dbFile);
                 database.createNewDatabase();
-                gameController = new GameController(database, false);
+                gameController = new GameController(database);
                 ImportHelper importHelper = new ImportHelper(importFolder);
 
                 List<Promotion> promotions = importHelper.promotionsDat("promos");

@@ -15,7 +15,7 @@ import java.sql.SQLException;
 @AllArgsConstructor
 public class FullRosterQuery extends GameObjectQuery {
 
-    private Promotion promotion;
+    private final Promotion promotion;
 
     @Override
     public Class sourceClass() {

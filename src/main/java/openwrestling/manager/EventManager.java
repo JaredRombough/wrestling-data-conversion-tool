@@ -90,13 +90,9 @@ public class EventManager extends GameObjectManager implements Serializable {
     @Override
     public void selectData() {
         List<Event> events = getDatabase().selectAll(Event.class);
-        events.forEach(event -> {
-            eventMap.put(event.getEventID(), event);
-        });
+        events.forEach(event -> eventMap.put(event.getEventID(), event));
         List<EventTemplate> eventTemplates = getDatabase().selectAll(EventTemplate.class);
-        eventTemplates.forEach(eventTemplate -> {
-            eventTemplateMap.put(eventTemplate.getEventTemplateID(), eventTemplate);
-        });
+        eventTemplates.forEach(eventTemplate -> eventTemplateMap.put(eventTemplate.getEventTemplateID(), eventTemplate));
     }
 
     public List<EventTemplate> createEventTemplates(List<EventTemplate> eventTemplates) {
@@ -231,10 +227,8 @@ public class EventManager extends GameObjectManager implements Serializable {
 
     public int eventsAfterDate(Promotion promotion, LocalDate date) {
         int futureEvents = 0;
-        futureEvents = getEvents().stream().filter((Event event) -> {
-            return event.getPromotion().equals(promotion)
-                    && event.getDate().isAfter(date);
-        }).map((_item) -> 1).reduce(futureEvents, Integer::sum);
+        futureEvents = getEvents().stream().filter((Event event) -> event.getPromotion().equals(promotion)
+                && event.getDate().isAfter(date)).map((_item) -> 1).reduce(futureEvents, Integer::sum);
         return futureEvents;
     }
 
@@ -425,10 +419,6 @@ public class EventManager extends GameObjectManager implements Serializable {
         return (totalCrowd + totalWork) / duration / 2;
     }
 
-    public boolean canReschedule(Event event) {
-        //return event != null && event.getTelevision() == null;
-        return true;
-    }
 
     public List<EventTemplate> getEventTemplates(Promotion promotion) {
         return getEventTemplates().stream()

@@ -495,7 +495,7 @@ public class GameControllerTest {
 
     private GameController initGameControllerFromTestDB(String dbName) {
         File importDatabase = new File("test import databases\\" + outputDirectoryName + "\\" + dbName + ".db");
-        gameController = new GameController(new Database(importDatabase), false);
+        gameController = new GameController(new Database(importDatabase));
 
         gameController.loadGameDataFromDatabase();
         //gameController.initializeGameData();

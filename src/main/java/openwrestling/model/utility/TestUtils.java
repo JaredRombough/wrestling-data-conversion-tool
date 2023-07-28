@@ -30,9 +30,9 @@ public final class TestUtils {
         }
 
         int[] numbers = new int[]{3, 4, 5, 6, 10, 20, 30, 40};
-        for (int n = 0; n < numbers.length; n++) {
+        for (int number : numbers) {
 
-            testSegments.add(testSegment(numbers[n], 1, roster));
+            testSegments.add(testSegment(number, 1, roster));
         }
         event.setSegments(testSegments);
 

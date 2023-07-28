@@ -57,5 +57,5 @@ public enum AngleLength implements iSegmentLength {
         public int value() {
             return 15;
         }
-    };
+    }
 }

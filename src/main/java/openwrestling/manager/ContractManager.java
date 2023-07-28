@@ -23,8 +23,8 @@ public class ContractManager extends GameObjectManager implements Serializable {
 
 
     private final BankAccountManager bankAccountManager;
-    private Map<Long, Contract> contractMap = new HashMap<>();
-    private Map<Long, StaffContract> staffContractMap = new HashMap<>();
+    private final Map<Long, Contract> contractMap = new HashMap<>();
+    private final Map<Long, StaffContract> staffContractMap = new HashMap<>();
 
     public ContractManager(Database database,
                            BankAccountManager bankAccountManager) {

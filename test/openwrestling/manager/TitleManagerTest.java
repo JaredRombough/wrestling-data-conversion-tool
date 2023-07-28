@@ -22,7 +22,7 @@ public class TitleManagerTest {
     private Database database;
     private TitleManager titleManager;
     private WorkerManager workerManager;
-    private LocalDate today = LocalDate.now();
+    private final LocalDate today = LocalDate.now();
 
     @Before
     public void setUp() {

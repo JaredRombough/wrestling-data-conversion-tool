@@ -7,18 +7,18 @@ import java.util.List;
 
 public interface iPerson {
 
-    public iContract getContract();
+    iContract getContract();
 
-    public iContract getContract(Promotion promotion);
+    iContract getContract(Promotion promotion);
 
-    public List<? extends iContract> getContracts();
+    List<? extends iContract> getContracts();
 
-    public Gender getGender();
+    Gender getGender();
 
-    public String getName();
+    String getName();
 
-    public void setName(String name);
+    void setName(String name);
 
-    public void setShortName(String name);
+    void setShortName(String name);
 
 }

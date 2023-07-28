@@ -126,9 +126,7 @@ public final class ViewUtils {
 
         String selectedButtonClass = "selectedButton";
 
-        buttons.stream().filter((b) -> (b.getStyleClass().contains(selectedButtonClass))).forEach((b) -> {
-            b.getStyleClass().remove(selectedButtonClass);
-        });
+        buttons.stream().filter((b) -> (b.getStyleClass().contains(selectedButtonClass))).forEach((b) -> b.getStyleClass().remove(selectedButtonClass));
 
         button.getStyleClass().add(selectedButtonClass);
 
@@ -137,9 +135,7 @@ public final class ViewUtils {
     public static String intToStars(int rating) {
         int stars = rating / 20;
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < stars; i++) {
-            sb.append("*");
-        }
+        sb.append("*".repeat(Math.max(0, stars)));
 
         int quarterStars = (rating / 5) % 4;
 

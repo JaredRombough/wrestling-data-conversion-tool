@@ -42,7 +42,7 @@ public class SegmentTeam extends GameObject implements Serializable {
 
         if (type.equals(TeamType.EVERYONE)) {
             string = "Everyone";
-        } else if (!type.equals(TeamType.EVERYONE) && CollectionUtils.isEmpty(workers)) {
+        } else if (CollectionUtils.isEmpty(workers)) {
             string = "(Empty)";
         } else {
             string = ModelUtils.slashShortNames(workers);

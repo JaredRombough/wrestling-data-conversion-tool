@@ -134,11 +134,11 @@ public class TitleManager extends GameObjectManager implements Serializable {
         StringBuilder sb = new StringBuilder();
 
 
+
 //        for (TitleReign titleReign : getTitleReigns(title)) {
 //            sb.append(titleReignString(titleReign));
 //            sb.append("\n");
 //        }
-
         return sb.length() > 0 ? sb.toString() : "No title reigns on record";
 
     }

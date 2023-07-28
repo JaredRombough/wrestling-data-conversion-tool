@@ -18,7 +18,7 @@ import java.util.Map;
 public class BankAccountManager extends GameObjectManager implements Serializable {
 
     private List<BankAccount> bankAccounts;
-    private Map<Long, List<Transaction>> promotionTransactionMap = new HashMap<>();
+    private final Map<Long, List<Transaction>> promotionTransactionMap = new HashMap<>();
 
     public BankAccountManager(Database database) {
         super(database);

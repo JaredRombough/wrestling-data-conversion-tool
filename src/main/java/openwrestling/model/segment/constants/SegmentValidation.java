@@ -50,5 +50,5 @@ public enum SegmentValidation implements iSegmentValidation {
         public String getSymbol() {
             return "✔";
         }
-    };
+    }
 }
