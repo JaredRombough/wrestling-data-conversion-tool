@@ -1,8 +1,8 @@
 # Wrestling data conversion tool
 
+A simple Java application for converting DAT files into a Sqlite database.
 
 https://openwrestling.itch.io/open-wrestling
-
 
 To compile and run, use Intellij with the JavaFX maven plugin.
 
