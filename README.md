@@ -24,4 +24,4 @@ To compile executable jar
 
 To build zip file for distribution
 
-> .\owbuild
+> $ ./owbuild.bat

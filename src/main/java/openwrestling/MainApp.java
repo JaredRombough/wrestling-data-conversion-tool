@@ -36,8 +36,6 @@ public class MainApp extends Application {
     private final transient Logger logger;
     private final List<GameScreen> screens;
     @Getter
-    private final ResourceBundle resx;
-    @Getter
     private Stage primaryStage;
     private GameController gameController;
     private File picsFolder;
@@ -64,8 +62,6 @@ public class MainApp extends Application {
         logger.log(Level.INFO, "Logger online. Running version " + VERSION);
 
         Locale locale = new Locale("en", "US");
-
-        resx = ResourceBundle.getBundle("openwrestling.Language", locale);
 
         currentStageWidth = WINDOW_MIN_WIDTH;
     }

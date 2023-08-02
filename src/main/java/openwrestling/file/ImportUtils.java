@@ -43,31 +43,31 @@ public class ImportUtils {
         Path path = Paths.get(importFolder.getPath() + "\\" + fileName + ".dat");
         byte[] data;
 
-        byte[] altData;
-String data2;
-String data1;
+//        byte[] altData;
+//String data2;
+//String data1;
 
 String wrestlerAString;
         String wrestlerBString;
         try {
             data = Files.readAllBytes(path);
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile()), "Cp1252"));
-            data2 = reader.lines().collect(Collectors.joining());
-            data1 = DatatypeConverter.printHexBinary(data);
+//            data2 = reader.lines().collect(Collectors.joining());
+//            data1 = DatatypeConverter.printHexBinary(data);
 
 
 
             //temp
-            Path wrestlerA = Paths.get("test_data\\wrestlerA.dat");
-            Path wrestlerB = Paths.get("test_data\\wrestlerB.dat");
-
-            BufferedReader readerA = new BufferedReader(new InputStreamReader(new FileInputStream(wrestlerA.toFile()), "Cp1252"));
-            BufferedReader readerB = new BufferedReader(new InputStreamReader(new FileInputStream(wrestlerB.toFile()), "Cp1252"));
-
-            wrestlerAString = readerA.lines().collect(Collectors.joining());
-            wrestlerBString = readerB.lines().collect(Collectors.joining());
-
-            altData =  Files.readAllBytes(wrestlerB);
+//            Path wrestlerA = Paths.get("test_data\\wrestlerA.dat");
+//            Path wrestlerB = Paths.get("test_data\\wrestlerB.dat");
+//
+//            BufferedReader readerA = new BufferedReader(new InputStreamReader(new FileInputStream(wrestlerA.toFile()), "Cp1252"));
+//            BufferedReader readerB = new BufferedReader(new InputStreamReader(new FileInputStream(wrestlerB.toFile()), "Cp1252"));
+//
+//            wrestlerAString = readerA.lines().collect(Collectors.joining());
+//            wrestlerBString = readerB.lines().collect(Collectors.joining());
+//
+//            altData =  Files.readAllBytes(wrestlerB);
             //
 
 
@@ -77,17 +77,17 @@ String wrestlerAString;
             throw new RuntimeException(e);
         }
 
-        List<Integer> different = new ArrayList<>();
-        List<Character> differentA = new ArrayList<>();
-        List<Character> differentB = new ArrayList<>();
+//        List<Integer> different = new ArrayList<>();
+//        List<Character> differentA = new ArrayList<>();
+//        List<Character> differentB = new ArrayList<>();
 
-        for(int i = 0; i < wrestlerAString.length(); i++) {
-            if(wrestlerAString.charAt(i) != wrestlerBString.charAt(i)) {
-                different.add(i);
-                differentA.add(wrestlerAString.charAt(i));
-                differentB.add(wrestlerBString.charAt(i));
-            }
-        }
+//        for(int i = 0; i < wrestlerAString.length(); i++) {
+//            if(wrestlerAString.charAt(i) != wrestlerBString.charAt(i)) {
+//                different.add(i);
+//                differentA.add(wrestlerAString.charAt(i));
+//                differentB.add(wrestlerBString.charAt(i));
+//            }
+//        }
 
 
         return DatatypeConverter.printHexBinary(data);
