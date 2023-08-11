@@ -26,8 +26,7 @@ import java.util.ResourceBundle;
 
 public class MainApp extends Application {
 
-    public static final String CONTACT = "OpenWrestling@gmail.com or /u/OpenWrestling on Reddit";
-    public static final String VERSION = "0.5.1";
+    public static final String VERSION = "1.0";
 
     private static final int WINDOW_MIN_WIDTH = 1600;
     private static final int WINDOW_MIN_HEIGHT = 900;
@@ -146,7 +145,7 @@ public class MainApp extends Application {
             importPopup.setResizable(false);
 
             importPopup.initModality(Modality.APPLICATION_MODAL);
-            importPopup.setTitle("New Import Game");
+            importPopup.setTitle("Open Wrestling Conversion Tool " + VERSION);
 
             GameScreen importDialog = ViewUtils.loadScreenFromFXML(ScreenCode.IMPORT_DIALOG, this, gameController);
             importDialog.controller.updateLabels();
